@@ -48,6 +48,8 @@ import re
 
 继续推荐 = "再来|继续|接着|(换|下)一(批|个)|不要|还要|还有(吗|呢)|我觉得不行"
 
+管理桌游 = "管理桌游"
+
 def extract(sentence):
 	player = re.compile(人数).search(sentence)
 	duration = re.compile(时长).search(sentence)
@@ -58,6 +60,8 @@ def extract(sentence):
 	name = re.compile(桌游名).search(sentence)
 
 	nextround = re.compile(继续推荐).search(sentence)
+	
+	manage = re.compile(管理桌游).match(sentence)
 	
 	start = re.compile(启动).match(sentence)
 	shutdown = re.compile(退出).match(sentence)
@@ -71,6 +75,9 @@ def extract(sentence):
 	
 	if not (nextround is None):
 		return {"type" : 5}
+	
+	if not (manage is None):
+		return {"type" : 6}
 	
 	if not (name is None):
 		# 询问：有名字，有特征
@@ -118,6 +125,8 @@ if __name__ == "__main__":
 	#询问
 	extract_test("三国杀多长时间内能玩完啊")
 	extract_test("Uno是轻松愉快的桌游吗")
+	#管理
+	extract_test("管理桌游")
 	#开关
 	extract_test("打开芭乐桌游")
 	extract_test("滚吧")
