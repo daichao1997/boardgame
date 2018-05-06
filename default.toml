@@ -1,0 +1,9 @@
+[[adapters]]
+name = "dingdong"
+path = "/skills/boardgame/dingdong"
+targetUrl = "http://127.0.0.1:22101/"
+
+[[adapters]]
+name = "shuidi"
+path = "/skills/boardgame/shuidi"
+targetUrl = "http://127.0.0.1:22101/"

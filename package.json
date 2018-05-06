@@ -1,0 +1,34 @@
+{
+  "name": "renyun-adapter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "micro-dev",
+    "mock": "micro test/mock.js -p 3001",
+    "test": "node test/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://vcs@phabricator.internetapi.cn:2222/source/renyun-adapter.git"
+  },
+  "author": "Nex",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "config": "^1.30.0",
+    "micro": "^9.1.4",
+    "microrouter": "^3.1.1",
+    "toml": "^2.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "micro-dev": "^2.2.2"
+  }
+}
