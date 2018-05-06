@@ -46,6 +46,8 @@ import re
 启动 = "((打开|启动|进入|你好)芭乐(财经|桌游)(在吗)?)"
 退出 = "(退出|再见|滚蛋|滚吧|去死|掰掰|拜拜|休息|闭嘴)"
 
+继续推荐 = "再来|继续|接着|(换|下)一(批|个)|不要|还要|还有(吗|呢)|我觉得不行"
+
 def extract(sentence):
 	player = re.compile(人数).search(sentence)
 	duration = re.compile(时长).search(sentence)
@@ -54,6 +56,8 @@ def extract(sentence):
 	ask_duration = re.compile(多长时间内).search(sentence)
 	
 	name = re.compile(桌游名).search(sentence)
+
+	nextround = re.compile(继续推荐).search(sentence)
 	
 	start = re.compile(启动).match(sentence)
 	shutdown = re.compile(退出).match(sentence)
@@ -64,6 +68,9 @@ def extract(sentence):
 	# 退出	
 	if not (shutdown is None):
 		return {"type" : 4}
+	
+	if not (nextround is None):
+		return {"type" : 5}
 	
 	if not (name is None):
 		# 询问：有名字，有特征
@@ -90,21 +97,28 @@ def extract(sentence):
 
 	return {"type": -1}
 
+def extract_test(sentence):
+	print(sentence)
+	print(extract(sentence))
+
 if __name__ == "__main__":
-	print(extract("让芭乐桌游帮我查一下三国杀"))
-	
-	print(extract("有没有就是那种超级无敌紧张刺激的蛇皮桌游？"))
-	print(extract("有什么桌游需要演技"))
-	
-	print(extract("芭乐桌游查一下五个人玩的桌游"))
-	print(extract("有没有适合12个人玩的桌游"))
-	print(extract("狼人杀怎么玩"))
-	
-	print(extract("有什么一个小时内能玩完的桌游"))
-	print(extract("三国杀多长时间内能玩完啊"))
-	
-	print(extract("Uno是轻松愉快的桌游吗"))
-	
-	print(extract("打开芭乐桌游"))
-	print(extract("滚吧"))
+	#介绍
+	extract_test("让芭乐桌游帮我查一下三国杀")
+	extract_test("狼人杀怎么玩")
+	#推荐
+	extract_test("有没有就是那种超级无敌紧张刺激的蛇皮桌游？")
+	extract_test("有什么桌游需要演技")
+	extract_test("查一下五个人玩的桌游")
+	extract_test("有什么一个小时内能玩完的桌游")
+	#继续推荐
+	extract_test("继续嘛")
+	extract_test("人家还要")
+	extract_test("这都什么垃圾桌游，下一个")
+	extract_test("我觉得不行")
+	#询问
+	extract_test("三国杀多长时间内能玩完啊")
+	extract_test("Uno是轻松愉快的桌游吗")
+	#开关
+	extract_test("打开芭乐桌游")
+	extract_test("滚吧")
 	pass
