@@ -68,15 +68,15 @@ def extract(sentence):
 	if not (name is None):
 		# 询问：有名字，有特征
 		if not (player is None):
-			return {"type" : 2, "人数" : player.group("人数")}
+			return {"type" : 2, "人数" : player.group("人数"), "桌游名" : name.group("桌游名")}
 		if not (ask_player is None):
-			return {"type" : 2, "人数" : "问"}
+			return {"type" : 2, "人数" : "问", "桌游名" : name.group("桌游名")}
 		if not (duration is None):
-			return {"type" : 2, "时长" : duration.group("时长")}
+			return {"type" : 2, "时长" : duration.group("时长"), "桌游名" : name.group("桌游名")}
 		if not (ask_duration is None):
-			return {"type" : 2, "时长" : "问"}
+			return {"type" : 2, "时长" : "问", "桌游名" : name.group("桌游名")}
 		if not (label is None):
-			return {"type" : 2, "标签" : label.group("标签")}
+			return {"type" : 2, "标签" : label.group("标签"), "桌游名" : name.group("桌游名")}
 		# 介绍：有名字，无特征
 		return {"type" : 1, "桌游名" : name.group("桌游名")}
 	else:
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 	
 	print(extract("芭乐桌游查一下五个人玩的桌游"))
 	print(extract("有没有适合12个人玩的桌游"))
-	print(extract("狼人杀能300个人玩吗"))
+	print(extract("狼人杀怎么玩"))
 	
 	print(extract("有什么一个小时内能玩完的桌游"))
 	print(extract("三国杀多长时间内能玩完啊"))
