@@ -13,7 +13,7 @@ cursor = db.cursor()
 cursor.execute("DROP TABLE IF EXISTS boardgame")
 
 sql = '''CREATE TABLE boardgame(
-			id VARCHAR(5),
+			id VARCHAR(10),
 			name VARCHAR(20),
 			minNOP TINYINT NOT NULL,
 			maxNOP TINYINT NOT NULL,
@@ -32,11 +32,13 @@ cursor.execute(sql)
 cursor.execute("DROP TABLE IF EXISTS barmanager")
 
 sql = '''CREATE TABLE barmanager(
-			manager VARCHAR(30),
-			passwd VARCHAR(100),
-			speakers VARCHAR(500),
-			games VARCHAR(500),
-			PRIMARY KEY(manager)
+			-- manager VARCHAR(30),
+			-- passwd VARCHAR(100),
+			-- speakers VARCHAR(500),
+			-- games VARCHAR(500),
+			-- PRIMARY KEY(manager)
+			userid VARCHAR(100),
+			id VARCHAR(10)
 			)DEFAULT CHARSET=utf8'''
 
 cursor.execute(sql)	
