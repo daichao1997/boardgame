@@ -9,7 +9,9 @@ function choose_item(event) {
 	
 	var bglist = document.getElementById("bglist");
 	var mylist = document.getElementById("mylist");
+	
 	var item = event.currentTarget;
+	var bgid = item.getAttribute("data-bgid");
 	var chosen = item.getAttribute("data-chosen");
 	
 	if(chosen == "no") {
@@ -22,7 +24,7 @@ function choose_item(event) {
 		bglist.appendChild(item);
 	}
 	
-	var xmlhttp;		
+	var xmlhttp;
 	if(window.XMLHttpRequest)
 		xmlhttp = new XMLHttpRequest();
 	else
@@ -33,8 +35,11 @@ function choose_item(event) {
 		{
 			document.getElementById("hint").innerHTML = xmlhttp.responseText;
 		}
+		else
+		{
+			document.getElementById("hint").innerHTML = "FAIL!";
+		}
 	}
-	xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+item.getAttribute("data-bgid"),true);
+	xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
 	xmlhttp.send();
-	
 }
