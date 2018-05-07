@@ -192,6 +192,7 @@ def handle_post():
                 n = int(games[0])
                 if n <= 0:
                     res = "对不起，没有其他满足您要求的桌游了"
+                    recomFile.write("0")
                 else:
                     recomFile.write(str(n-3))
                     res = "为您推荐"
@@ -309,13 +310,13 @@ def handle_post():
             time = parse_label(rslt, 0)
             print("key:"+str(time))
             sqlType = 0
-            sql = trans_sql(2, 0, [time])
+            sql = trans_sql(2, 0, [game_name])
                    
         elif "人数" in rslt:
             nop = parse_label(rslt, 1)
             print("key:"+str(nop))
             sqlType = 1
-            sql = trans_sql(2, 1, [nop])
+            sql = trans_sql(2, 1, [game_name])
         
         else:
             return return_json(version = json["version"], reqId = req["requestId"])
