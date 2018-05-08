@@ -12,25 +12,50 @@
 			<div class="column">
 				<h1 class="title">全部桌游</h1>
 				<div class="buttons" id="bglist">
-					<?php
-					$bglist = "";
-					$mylist = "";
-					if (($bg = fopen("boardgame.csv", "r")) !== FALSE) {
-						while (($line = fgetcsv($bg, 1000, ",")) !== FALSE) {
-							if($line[2] == "no")
-								$bglist = $bglist . "<a class=\"button\" data-bgid=\"$line[0]\" data-chosen=\"no\">$line[1]</a>";
-							else if($line[2] == "yes")
-								$mylist = $mylist . "<a class=\"button\" data-bgid=\"$line[0]\" data-chosen=\"yes\">$line[1]</a>";
-						}
-					}
-					echo $bglist;
-					echo "</div>
-			</div>
-			<div class=\"column\">
-				<h1 class=\"title\">您的桌游</h1>
-				<div class=\"buttons\" id=\"mylist\">";
-					echo $mylist;
-					?>
+<?php
+	$dbhost = "localhost";
+	$dbuser = "mysql";
+	$dbpasswd = "mysql";
+	$dbname = "boardgameRecommendation";
+	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
+	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
+
+	$mylist = "";
+	$bglist = "";
+	$str = "";
+
+	$ids = array();
+	$names = array();
+	$sql = "SELECT id, name FROM boardgame";
+	$rslt = mysqli_query($db, $sql);
+	while($row = mysqli_fetch_assoc($rslt)){
+		array_push($ids,$row["id"]);
+		array_push($names,$row["name"]);
+	}
+
+	// bar
+	$barids = array();
+	$sql = "SELECT id FROM barmanager WHERE userid='$userid'";
+	$rslt = mysqli_query($db, $sql);
+	while($row = mysqli_fetch_assoc($rslt)){
+		array_push($barids,$row);
+	}
+	$len = count($names);
+	for($i = 0; $i < $len; $i++) {
+		if(array_search($id[$i], $barids) === FALSE){
+			$bglist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"no\">$names[$i]</a>";
+		}
+		else {
+			$mylist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"yes\">$names[$i]</a>";
+		}
+	}
+	$str .= $bglist;
+	$str .= "</div></div>";
+	$str .= "<div class=\"column\"><h1 class=\"title\">您的桌游</h1><div class=\"buttons\" id=\"mylist\">";
+	$str .= $mylist;
+
+	echo $str;
+?>
 				</div>
 			</div>
 		</div>

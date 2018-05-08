@@ -32,14 +32,11 @@ cursor.execute(sql)
 cursor.execute("DROP TABLE IF EXISTS barmanager")
 
 sql = '''CREATE TABLE barmanager(
-			manager VARCHAR(30),
-			passwd VARCHAR(100),
-			speakers VARCHAR(500),
-			games VARCHAR(500),
-			PRIMARY KEY(manager)
+			userid VARCHAR(100),
+			game VARCHAR(10)
 			)DEFAULT CHARSET=utf8'''
 
-cursor.execute(sql)	
+cursor.execute(sql)
 
 # boardgame
 cnt = -1

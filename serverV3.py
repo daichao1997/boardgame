@@ -3,9 +3,6 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
-from Crypto.Cipher import AES
-import base64
-import urllib
 import extract
 import pymysql, os
 
@@ -42,8 +39,7 @@ trans_1abel=[
 ]
 
 defaultRes = "对不起，我没有找到您想要的";
-# defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29'
-defaultDB = '0,1,2,3,4,5,6,7,8,9'
+defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
 
 db = pymysql.connect("localhost","mysql","mysql",\
     "boardgameRecommendation",charset="utf8")
@@ -104,6 +100,7 @@ def return_json(version, reqId, res=defaultRes, isEnd=False):
                     "directives": [],
                     "shouldEndSession": isEnd
                    })
+
 
 def trans_sql(reqType, sqlType, attrList):
     '''
@@ -194,11 +191,12 @@ def handle_post():
                 n = int(games[0])
                 if n <= 0:
                     res = "对不起，没有其他满足您要求的桌游了"
+                    recomFile.write("0")
                 else:
                     recomFile.write(str(n-3))
                     res = "为您推荐"
                     for i in range(1,n+1):
-                        if i < 4:
+                        if i<4:
                             res += "," + str(i) + ":" + games[i]
                         else:
                             recomFile.write(" "+games[i])
@@ -206,7 +204,6 @@ def handle_post():
         else:
             res = "您之前还没让我给您推荐过桌游哟"
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
-    
     # manage
     elif rslt["type"] == 6:
         obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_ECB, "IV456")
@@ -230,11 +227,10 @@ def handle_post():
                         "type": "2",
                         "url": url
                         })
-
     # get personal database
     # full database default
-    sql = '''SELECT games FROM barmanager WHERE \
-            FIND_IN_SET('%s',speakers)''' % usr
+    sql = "SELECT id FROM barmanager WHERE \
+            userid='%s'" % usr
 
     try:
         cursor.execute(sql)
@@ -242,7 +238,10 @@ def handle_post():
         if len(db) == 0:
             usrdb = defaultDB
         else:
-            usrdb = db[0][0]   
+            usrdb = ""
+            for k in range(len(db)):
+                usrdb += db[k][0]+","
+            usrdb = usrdb[:-1]
     except Exception as e:
         print(e)
         res = "数据库错误"
@@ -335,13 +334,13 @@ def handle_post():
             time = parse_label(rslt, 0)
             print("key:"+str(time))
             sqlType = 0
-            sql = trans_sql(2, 0, [time])
+            sql = trans_sql(2, 0, [game_name])
                    
         elif "人数" in rslt:
             nop = parse_label(rslt, 1)
             print("key:"+str(nop))
             sqlType = 1
-            sql = trans_sql(2, 1, [nop])
+            sql = trans_sql(2, 1, [game_name])
         
         else:
             return return_json(version = json["version"], reqId = req["requestId"])
