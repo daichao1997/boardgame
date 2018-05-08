@@ -3,9 +3,6 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
-from Crypto.Cipher import AES
-import base64
-import urllib
 import extract
 import pymysql, os
 
@@ -42,8 +39,7 @@ trans_1abel=[
 ]
 
 defaultRes = "对不起，我没有找到您想要的";
-# defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29'
-defaultDB = '0,1,2,3,4,5,6,7,8,9'
+defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
 
 db = pymysql.connect("localhost","mysql","mysql",\
     "boardgameRecommendation",charset="utf8")
@@ -104,6 +100,7 @@ def return_json(version, reqId, res=defaultRes, isEnd=False):
                     "directives": [],
                     "shouldEndSession": isEnd
                    })
+
 
 def trans_sql(reqType, sqlType, attrList):
     '''
@@ -199,7 +196,7 @@ def handle_post():
                     recomFile.write(str(n-3))
                     res = "为您推荐"
                     for i in range(1,n+1):
-                        if i < 4:
+                        if i<4:
                             res += "," + str(i) + ":" + games[i]
                         else:
                             recomFile.write(" "+games[i])
@@ -207,35 +204,11 @@ def handle_post():
         else:
             res = "您之前还没让我给您推荐过桌游哟"
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
-    
-    # manage
-    elif rslt["type"] == 6:
-        obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_ECB, "IV456")
-        id_aes = obj.encrypt(usr)
-        id_base64 = base64.encode(id_aes)
-        id_url = urllib.parse.quote_plus(id_base64)
-        
-        url = "47.93.86.218:80/v/skills/boardgame/boardgame.php?userid="+id_url
-        return jsonify(version = json["version"],
-                       requestId = req["requestId"],
-                       response = {
-                        "outputSpeech": "请点击我们为您推送的链接，然后进行操作",
-                        "reprompt": {
-                          "outputSpeech": "对不起，我没听清，可以再试试吗"
-                        },
-                        "directives": [],
-                        "shouldEndSession": isEnd
-                       },
-                       push_to_app = {
-                        "title": "点击链接，管理您的桌游",
-                        "type": "2",
-                        "url": url
-                        })
 
     # get personal database
     # full database default
-    sql = '''SELECT games FROM barmanager WHERE \
-            FIND_IN_SET('%s',speakers)''' % usr
+    sql = "SELECT id FROM barmanager WHERE \
+            userid='%s'" % usr
 
     try:
         cursor.execute(sql)
@@ -243,7 +216,10 @@ def handle_post():
         if len(db) == 0:
             usrdb = defaultDB
         else:
-            usrdb = db[0][0]   
+            usrdb = ""
+            for k in range(len(db)):
+                usrdb += db[k][0]+","
+            usrdb = usrdb[:-1]
     except Exception as e:
         print(e)
         res = "数据库错误"
