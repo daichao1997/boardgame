@@ -205,6 +205,29 @@ def handle_post():
             res = "您之前还没让我给您推荐过桌游哟"
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
 
+    # manage
+    elif rslt["type"] == 6:
+        obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_CBC, "IV456")
+        # id_aes = obj.encrypt(usr)
+        id_base64 = base64.encode(id_aes)
+        id_url = urllib.parse.quote_plus(id_base64)
+        
+        url = "47.93.86.218:80/v/skills/boardgame/boardgame.php?userid="+id_url
+        return jsonify(version = json["version"],
+                       requestId = req["requestId"],
+                       response = {
+                        "outputSpeech": "请点击我们为您推送的链接，然后进行操作",
+                        "reprompt": {
+                          "outputSpeech": "对不起，我没听清，可以再试试吗"
+                        },
+                        "directives": [],
+                        "shouldEndSession": isEnd
+                       },
+                       push_to_app = {
+                        "title": "点击链接，管理您的桌游",
+                        "type": "2",
+                        "url": url
+                        })
     # get personal database
     # full database default
     sql = "SELECT id FROM barmanager WHERE \

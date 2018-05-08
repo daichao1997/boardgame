@@ -49,7 +49,7 @@ for game in games:
 
 	if cnt == -1:
 		cnt = 0
-		continue
+		continuee
 
 	info = game.strip().split()
 	assert len(info) == 15

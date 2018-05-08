@@ -19,23 +19,35 @@
 	$dbname = "boardgameRecommendation";
 	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
 	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
-
+	$userid = urldecode($userid);
+	$userid = base64_decode($userid);
+//	$userid = openssl_decrypt($userid, "AES-128-CBC", "YEK_A_MA_I_OLLEH", "OPENSSL_RAW_DATA", "IV456");
 	$mylist = "";
 	$bglist = "";
 	$str = "";
-	for($i = 0; $i < 10; $i++) {
-		// Do I have it?
-		$query = "SELECT id FROM barmanager WHERE userid='$userid' AND id='$i'";
-		$query_result = mysqli_query($db, $query);
-		// Boardgame name
-		$query_name = mysqli_query($db, "SELECT name FROM boardgame WHERE id='$i'");
-		$name_row = mysqli_fetch_array($query_name, MYSQLI_BOTH);
-		// Dispatch
-		if(mysqli_num_rows($query_result) != 0){
-			$mylist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"yes\">$name_row[0]</a>";
+	$ids = array();
+	$names = array();
+	$sql = "SELECT id, name FROM boardgame";
+	$rslt = mysqli_query($db, $sql);
+	while($row = mysqli_fetch_assoc($rslt)){
+		array_push($ids,$row["id"]);
+		array_push($names,$row["name"]);
+	}
+
+	// bar
+	$barids = array();
+	$sql = "SELECT id FROM barmanager WHERE userid='$userid'";
+	$rslt = mysqli_query($db, $sql);
+	while($row = mysqli_fetch_assoc($rslt)){
+		array_push($barids,$row["id"]);
+	}
+	$len = count($names);
+	for($i = 0; $i < $len; $i++) {
+		if(array_search($ids[$i], $barids) === FALSE){
+			$bglist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"no\">$names[$i]</a>";
 		}
 		else {
-			$bglist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"no\">$name_row[0]</a>";
+			$mylist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"yes\">$names[$i]</a>";
 		}
 	}
 	$str .= $bglist;
