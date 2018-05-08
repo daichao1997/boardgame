@@ -19,6 +19,9 @@
 	$dbname = "boardgameRecommendation";
 	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
 	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
+	$userid = urldecode($userid);
+	$userid = base64_decode($userid);
+//	$userid = openssl_decrypt($userid, "AES-128-CBC", "YEK_A_MA_I_OLLEH", "OPENSSL_RAW_DATA", "IV456");
 
 	$mylist = "";
 	$bglist = "";
@@ -38,11 +41,11 @@
 	$sql = "SELECT id FROM barmanager WHERE userid='$userid'";
 	$rslt = mysqli_query($db, $sql);
 	while($row = mysqli_fetch_assoc($rslt)){
-		array_push($barids,$row);
+		array_push($barids,$row["id"]);
 	}
 	$len = count($names);
 	for($i = 0; $i < $len; $i++) {
-		if(array_search($id[$i], $barids) === FALSE){
+		if(array_search($ids[$i], $barids) === FALSE){
 			$bglist .= "<a class=\"button\" data-bgid=\"$i\" data-chosen=\"no\">$names[$i]</a>";
 		}
 		else {

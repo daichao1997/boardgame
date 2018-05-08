@@ -10,6 +10,8 @@ $db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
 $bgid = mysqli_real_escape_string($db, $_GET["bgid"]);
 // userid
 $userid = mysqli_real_escape_string($db, $_GET["userid"]);
+$userid = urldecode($userid);
+$userid = base64_decode($userid);
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
 // Write to our database.

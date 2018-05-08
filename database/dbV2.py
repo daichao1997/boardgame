@@ -17,8 +17,8 @@ sql = '''CREATE TABLE boardgame(
 			name VARCHAR(20),
 			minNOP TINYINT NOT NULL,
 			maxNOP TINYINT NOT NULL,
-			minTime TINYINT NOT NULL,
-			maxTime TINYINT NOT NULL,
+			minTime INT NOT NULL,
+			maxTime INT NOT NULL,
 			prevail TINYINT NOT NULL,
 			content VARCHAR(10),
 			setup TINYINT NOT NULL,
@@ -32,11 +32,14 @@ cursor.execute(sql)
 cursor.execute("DROP TABLE IF EXISTS barmanager")
 
 sql = '''CREATE TABLE barmanager(
-			userid VARCHAR(100),
-			game VARCHAR(10)
+			manager VARCHAR(30),
+			passwd VARCHAR(100),
+			speakers VARCHAR(500),
+			games VARCHAR(500),
+			PRIMARY KEY(manager)
 			)DEFAULT CHARSET=utf8'''
 
-cursor.execute(sql)
+cursor.execute(sql)	
 
 # boardgame
 cnt = -1
@@ -44,7 +47,7 @@ for game in games:
 
 	if cnt == -1:
 		cnt = 0
-		continue
+		continuee
 
 	info = game.strip().split()
 	assert len(info) == 15

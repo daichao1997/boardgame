@@ -206,8 +206,8 @@ def handle_post():
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
     # manage
     elif rslt["type"] == 6:
-        obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_ECB, "IV456")
-        id_aes = obj.encrypt(usr)
+        obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_CBC, "IV456")
+        # id_aes = obj.encrypt(usr)
         id_base64 = base64.encode(id_aes)
         id_url = urllib.parse.quote_plus(id_base64)
         
