@@ -220,7 +220,7 @@ def handle_post():
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
-                        "outputSpeech": "请点击我们为您推送的链接，然后进行操作",
+                        "outputSpeech": "请打开我们为您推送的链接，在网页上进行操作",
                         "reprompt": {
                           "outputSpeech": "对不起，我没听清，可以再试试吗"
                         },
@@ -228,8 +228,8 @@ def handle_post():
                         "shouldEndSession": True
                        },
                        push_to_app = {
-                        "title": "点击链接，管理您的桌游",
-                        "type": "2",
+                        "title": "您的桌游管理链接",
+                        "type": "1",
                         "url": url
                         })
     # get personal database
