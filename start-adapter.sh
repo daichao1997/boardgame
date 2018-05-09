@@ -1,1 +1,1 @@
-NODE_CONFIG_DIR=/root/v/skills/boardgame /root/v/renyun-adapter/node_modules/.bin/micro /root/v/renyun-adapter/index.js -p 22100
+NODE_CONFIG_DIR=/root/v/skills/boardgame /root/v/skills/boardgame/my_adapter/node_modules/.bin/micro /root/v/skills/boardgame/my_adapter/index.js -p 22100
