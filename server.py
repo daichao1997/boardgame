@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# This line is added to confirm the correctness of my script
+
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -43,11 +43,12 @@ trans_1abel=[
 defaultRes = "对不起，我没有找到您想要的";
 defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
 
+
 def dbConnet():
 
-    db = pymysql.connect("localhost","mysql","mysql",\
+    conn = pymysql.connect("localhost","mysql","mysql",\
         "boardgameRecommendation",charset="utf8")
-    cursor = db.cursor()
+    cursor = conn.cursor()
     return cursor
 
 
@@ -232,29 +233,27 @@ def handle_post():
                         "type": "1",
                         "url": url
                         })
-    # get personal database
-    # full database default
-
-    sql = "SELECT id FROM barmanager WHERE \
-            userid='%s'" % usr
-    try:
-        cursor = dbConnet()
-        cursor.execute(sql)
-        db = cursor.fetchall()
-        if len(db) == 0:
-            usrdb = defaultDB
-        else:
-            usrdb = ""
-            for k in range(len(db)):
-                usrdb += db[k][0]+","
-            usrdb = usrdb[:-1]
-    except Exception as e:
-        print(e)
-        res = "数据库错误"
-        return return_json(res=res, version = json["version"], reqId = req["requestId"])
     
     # recommendation
-    if rslt["type"] == 0:
+    elif rslt["type"] == 0:
+
+        try:
+            cursor = dbConnet()
+            cursor.execute("SELECT id FROM barmanager WHERE userid='%s'" % usr)
+            db = cursor.fetchall()
+            if len(db) == 0:
+                usrdb = defaultDB
+            else:
+                usrdb = ""
+                for k in range(len(db)):
+                    usrdb += db[k][0]+","
+                usrdb = usrdb[:-1]
+
+        except Exception as e:
+            print(e)
+            res = "数据库错误"
+            return return_json(res=res, version = json["version"], reqId = req["requestId"])
+
         if "时长" in rslt:
             time = parse_label(rslt, 0)
             print("key:"+str(time))
@@ -283,7 +282,6 @@ def handle_post():
             return return_json(version = json["version"], reqId = req["requestId"])
 
         try:
-            cursor = dbConnet()
             cursor.execute(sql)
             games = cursor.fetchall()
             if len(games) == 0:
