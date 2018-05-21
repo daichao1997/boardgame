@@ -1,4 +1,5 @@
 <?php
+header("content-Type: text/html; charset=utf-8");
 // When user clicks a button, an event will be triggered, and we will receive a GET request.
 // Handle this request by writing to our database correctly.
 $dbhost = "localhost";
@@ -15,6 +16,7 @@ $userid = base64_decode($userid);
 //$userid = openssl_decrypt($userid, "AES-128-CBC", "YEK_A_MA_I_OLLEH", OPENSSL_RAW_DATA, "THIS_IS_A_VECTOR");
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
+mysqli_query($db, "set character set 'utf8'");
 // Write to our database.
 if($op === "yes") {
 	$sql = "DELETE FROM barmanager WHERE userid='$userid' AND id='$bgid'";

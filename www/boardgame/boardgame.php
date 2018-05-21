@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>芭乐桌游管理页面</title>
 		<link rel="stylesheet" href="../../static/boardgame/bulma.css">
+		<script type="text/javascript" src="../../static/boardgame/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="../../static/boardgame/choose_item.js"></script>
 	</head>
 	<body>

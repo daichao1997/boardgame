@@ -7,19 +7,28 @@ function getQueryString(name) {
 }
 function show_action_add(event) {
 	item = event.target;
-	var action_add = document.getElementById("action-add");
-	action_add.style.display = "block";
-	action_add.style.position="absolute";
-	action_add.style.left = event.pageX+'px';
-	action_add.style.top = event.pageY+'px';
+	//var action_add = document.getElementById("action-add");
+	$("#action-add").show();
+	// action_add.style.position="absolute";
+	// action_add.style.left = event.pageX+'px';
+	// action_add.style.top = event.pageY+'px';
+	$('#action-add').css({ 
+		position: "absolute",
+		top: event.pageY+'px', left: event.pageX+'px'
+	}).appendTo('body');
 }
+
 function show_action_del(event) {
 	item = event.target;
-	var action_del = document.getElementById("action-del");
-	action_del.style.display = "block";
-	action_del.style.position="absolute";
-	action_del.style.left = event.pageX+'px';
-	action_del.style.top = event.pageY+'px';
+	//var action_del = document.getElementById("action-del");
+	$("#action-del").show();
+	// action_del.style.position="absolute";
+	// action_del.style.left = event.pageX+'px';
+	// action_del.style.top = event.pageY+'px';
+	$('#action-del').css({ 
+		position: "absolute",
+		top: event.pageY+'px', left: event.pageX+'px'
+	}).appendTo('body');
 }
 function add_item(event) {
 	var userid = getQueryString("userid");
@@ -31,10 +40,6 @@ function add_item(event) {
 	var bgid = item.getAttribute("data-bgid");
 	var chosen = item.getAttribute("data-chosen");
 	
-	item.setAttribute("data-chosen", "yes");
-	mylist.appendChild(item);
-	item.onclick = show_action_del;
-	
 	var xmlhttp;
 	if(window.XMLHttpRequest)
 		xmlhttp = new XMLHttpRequest();
@@ -45,14 +50,24 @@ function add_item(event) {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
 			document.getElementById("hint").innerHTML = xmlhttp.responseText;
+			item.setAttribute("data-chosen", "yes");
+			mylist.appendChild(item);
+			item.onclick = show_action_del;
+			//$(item).click(show_action_del);
+			item.className = "button is-success is-inverted is-outlined";
 		}
 		else
 		{
 			document.getElementById("hint").innerHTML = "FAIL!";
 		}
 	}
-	xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
-	xmlhttp.send();
+	if(!userid || userid.length != 44) {
+		document.getElementById("hint").innerHTML = "Invalid userid";
+	}
+	else {
+		xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.send();
+	}
 }
 
 function del_item(event) {
@@ -65,10 +80,6 @@ function del_item(event) {
 	var bgid = item.getAttribute("data-bgid");
 	var chosen = item.getAttribute("data-chosen");
 	
-	item.setAttribute("data-chosen", "no");
-	bglist.appendChild(item);
-	item.onclick = show_action_add;
-	
 	var xmlhttp;
 	if(window.XMLHttpRequest)
 		xmlhttp = new XMLHttpRequest();
@@ -79,14 +90,23 @@ function del_item(event) {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 		{
 			document.getElementById("hint").innerHTML = xmlhttp.responseText;
+			item.setAttribute("data-chosen", "no");
+			bglist.appendChild(item);
+			item.onclick = show_action_add;
+			item.className = "button is-danger is-inverted is-outlined";
 		}
-		else
+		else if (xmlhttp.readyState == 4)
 		{
 			document.getElementById("hint").innerHTML = "FAIL!";
 		}
 	}
-	xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
-	xmlhttp.send();
+	if(!userid || userid.length != 44) {
+		document.getElementById("hint").innerHTML = "Invalid userid";
+	}
+	else {
+		xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.send();
+	}
 }
 
 var links = new Array(26);
