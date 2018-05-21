@@ -52,10 +52,10 @@
 	$len = count($names);
 	for($i = 0; $i < $len; $i++) {
 		if(array_search($ids[$i], $barids) === FALSE){
-			$bglist .= "<a class=\"button is-danger is-inverted is-outlined\" data-bgid=\"$i\" data-chosen=\"no\">$names[$i]</a>";
+			$bglist .= "<a class=\"button is-danger is-inverted is-outlined\" data-bgid=\"$ids[$i]\" data-chosen=\"no\">$names[$i]</a>";
 		}
 		else {
-			$mylist .= "<a class=\"button is-success is-inverted is-outlined\" data-bgid=\"$i\" data-chosen=\"yes\">$names[$i]</a>";
+			$mylist .= "<a class=\"button is-success is-inverted is-outlined\" data-bgid=\"$ids[$i]\" data-chosen=\"yes\">$names[$i]</a>";
 		}
 	}
 	$str .= $bglist;
