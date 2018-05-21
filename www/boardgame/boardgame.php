@@ -35,6 +35,7 @@
 	$ids = array();
 	$names = array();
 	$sql = "SELECT id, name FROM boardgame";
+	mysqli_query($db, "set character set 'utf8'");
 	$rslt = mysqli_query($db, $sql);
 	while($row = mysqli_fetch_assoc($rslt)){
 		array_push($ids,$row["id"]);
