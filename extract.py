@@ -50,84 +50,94 @@ import re
 
 管理桌游 = "管理桌游"
 
+有没有 = "有没有|这家店有|这里有|这儿有"
+
 def extract(sentence):
-	player = re.compile(人数).search(sentence)
-	duration = re.compile(时长).search(sentence)
-	label = re.compile(标签).search(sentence)
-	ask_player = re.compile(几个人).search(sentence)
-	ask_duration = re.compile(多长时间内).search(sentence)
-	
-	name = re.compile(桌游名).search(sentence)
+    player = re.compile(人数).search(sentence)
+    duration = re.compile(时长).search(sentence)
+    label = re.compile(标签).search(sentence)
+    ask_player = re.compile(几个人).search(sentence)
+    ask_duration = re.compile(多长时间内).search(sentence)
+    
+    name = re.compile(桌游名).search(sentence)
 
-	nextround = re.compile(继续推荐).search(sentence)
-	
-	manage = re.compile(管理桌游).match(sentence)
-	
-	start = re.compile(启动).match(sentence)
-	shutdown = re.compile(退出).match(sentence)
-	
-	# 启动
-	if not (start is None):
-		return {"type" : 3}
-	# 退出	
-	if not (shutdown is None):
-		return {"type" : 4}
-	
-	if not (nextround is None):
-		return {"type" : 5}
-	
-	if not (manage is None):
-		return {"type" : 6}
-	
-	if not (name is None):
-		# 询问：有名字，有特征
-		if not (player is None):
-			return {"type" : 2, "人数" : player.group("人数"), "桌游名" : name.group("桌游名")}
-		if not (ask_player is None):
-			return {"type" : 2, "人数" : "问", "桌游名" : name.group("桌游名")}
-		if not (duration is None):
-			return {"type" : 2, "时长" : duration.group("时长"), "桌游名" : name.group("桌游名")}
-		if not (ask_duration is None):
-			return {"type" : 2, "时长" : "问", "桌游名" : name.group("桌游名")}
-		if not (label is None):
-			return {"type" : 2, "标签" : label.group("标签"), "桌游名" : name.group("桌游名")}
-		# 介绍：有名字，无特征
-		return {"type" : 1, "桌游名" : name.group("桌游名")}
-	else:
-		# 推荐：无名字，有特征
-		if not (player is None):
-			return {"type" : 0, "人数" : player.group("人数")}
-		if not (duration is None):
-			return {"type" : 0, "时长" : duration.group("时长")}
-		if not (label is None):
-			return {"type" : 0, "标签" : label.group("标签")}
+    nextround = re.compile(继续推荐).search(sentence)
+    
+    manage = re.compile(管理桌游).match(sentence)
+    
+    start = re.compile(启动).match(sentence)
+    shutdown = re.compile(退出).match(sentence)
+    
+    exist = re.compile(有没有).search(sentence)
+    
+    # 启动
+    if not (start is None):
+        return {"type" : 3}
+    # 退出    
+    if not (shutdown is None):
+        return {"type" : 4}
+    
+    if not (nextround is None):
+        return {"type" : 5}
+    
+    if not (manage is None):
+        return {"type" : 6}
+    
+    if not (name is None):
+        # 询问：有名字，有特征
+        if not (player is None):
+            return {"type" : 2, "人数" : player.group("人数"), "桌游名" : name.group("桌游名")}
+        if not (ask_player is None):
+            return {"type" : 2, "人数" : "问", "桌游名" : name.group("桌游名")}
+        if not (duration is None):
+            return {"type" : 2, "时长" : duration.group("时长"), "桌游名" : name.group("桌游名")}
+        if not (ask_duration is None):
+            return {"type" : 2, "时长" : "问", "桌游名" : name.group("桌游名")}
+        if not (label is None):
+            return {"type" : 2, "标签" : label.group("标签"), "桌游名" : name.group("桌游名")}
+        if not (exist is None):
+            return {"type" : 7, "桌游名": name.group("桌游名")}
+        # 介绍：有名字，无特征
+        else:
+            return {"type" : 1, "桌游名" : name.group("桌游名")}
+    else:
+        # 推荐：无名字，有特征
+        if not (player is None):
+            return {"type" : 0, "人数" : player.group("人数")}
+        if not (duration is None):
+            return {"type" : 0, "时长" : duration.group("时长")}
+        if not (label is None):
+            return {"type" : 0, "标签" : label.group("标签")}
 
-	return {"type": -1}
+    return {"type": -1}
 
 def extract_test(sentence):
-	print(sentence)
-	print(extract(sentence))
+    print(sentence)
+    print(extract(sentence))
 
 if __name__ == "__main__":
-	#介绍
-	extract_test("让芭乐桌游帮我查一下三国杀")
-	extract_test("狼人杀怎么玩")
-	#推荐
-	extract_test("有没有就是那种超级无敌紧张刺激的蛇皮桌游？")
-	extract_test("有什么桌游需要演技")
-	extract_test("查一下五个人玩的桌游")
-	extract_test("有什么一个小时内能玩完的桌游")
-	#继续推荐
-	extract_test("继续嘛")
-	extract_test("人家还要")
-	extract_test("这都什么垃圾桌游，下一个")
-	extract_test("我觉得不行")
-	#询问
-	extract_test("三国杀多长时间内能玩完啊")
-	extract_test("Uno是轻松愉快的桌游吗")
-	#管理
-	extract_test("管理桌游")
-	#开关
-	extract_test("打开芭乐桌游")
-	extract_test("滚吧")
-	pass
+    #介绍
+    extract_test("让芭乐桌游帮我查一下三国杀")
+    extract_test("狼人杀怎么玩")
+    #推荐
+    extract_test("有没有就是那种超级无敌紧张刺激的蛇皮桌游？")
+    extract_test("有什么桌游需要演技")
+    extract_test("查一下五个人玩的桌游")
+    extract_test("有什么一个小时内能玩完的桌游")
+    #继续推荐
+    extract_test("继续嘛")
+    extract_test("人家还要")
+    extract_test("这都什么垃圾桌游，下一个")
+    extract_test("我觉得不行")
+    #询问
+    extract_test("三国杀多长时间内能玩完啊")
+    extract_test("Uno是轻松愉快的桌游吗")
+    #有没有
+    extract_test("你们这儿有三国杀吗")
+    extract_test("有没有大富翁")
+    #管理
+    extract_test("管理桌游")
+    #开关
+    extract_test("打开芭乐桌游")
+    extract_test("滚吧")
+    pass
