@@ -10,16 +10,16 @@ function show_action_add(event) {
 	var action_add = document.getElementById("action-add");
 	action_add.style.display = "block";
 	action_add.style.position="absolute";
-	action_add.style.left = event.clientX+'px';
-	action_add.style.top = event.clientY+'px';
+	action_add.style.left = event.pageX+'px';
+	action_add.style.top = event.pageY+'px';
 }
 function show_action_del(event) {
 	item = event.target;
 	var action_del = document.getElementById("action-del");
 	action_del.style.display = "block";
 	action_del.style.position="absolute";
-	action_del.style.left = event.clientX+'px';
-	action_del.style.top = event.clientY+'px';
+	action_del.style.left = event.pageX+'px';
+	action_del.style.top = event.pageY+'px';
 }
 function add_item(event) {
 	var userid = getQueryString("userid");
