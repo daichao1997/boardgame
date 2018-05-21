@@ -234,6 +234,27 @@ def handle_post():
                         "url": url
                         })
     
+    # has game
+    elif rslt["type"] == 7:
+
+        game_name = rslt["桌游名"]
+        try:
+            cursor = dbConnet()
+            cursor.execute("SELECT id FROM boardgame WHERE FIND_IN_SET('%s',name)" % game_name)
+            ids = cursor.fetchall()
+            cursor.execute("SELECT id FROM barmanager WHERE userid='%s' AND id='%s'" % (usr,ids[0][0]))
+            ifhas = cursor.fetchall()
+            if len(ifhas) == 0:
+                res = "这个没有诶"
+            else:
+                res = "有的"
+            return return_json(res=res, version = json["version"], reqId = req["requestId"])
+
+        except Exception as e:
+            print(e)
+            res = "数据库错误"
+            return return_json(res=res, version = json["version"], reqId = req["requestId"])
+
     # recommendation
     elif rslt["type"] == 0:
 
