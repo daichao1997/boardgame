@@ -2,10 +2,11 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>芭乐桌游管理页面</title>
-		<link rel="stylesheet" href="bulma.css">
-		<script type="text/javascript" src="choose_item.js"></script>
+		<link rel="stylesheet" href="../../static/boardgame/bulma.css">
+		<script type="text/javascript" src="../../static/boardgame/choose_item.js"></script>
 	</head>
 	<body>
 		<div class="columns">
@@ -16,6 +17,7 @@
 				<div class="box has-background-grey">
 					<div class="buttons" id="bglist">
 <?php
+	header("content-Type: text/html; charset=utf-8");
 	$dbhost = "localhost";
 	$dbuser = "mysql";
 	$dbpasswd = "mysql";
@@ -79,6 +81,6 @@
 			<a class="button is-info" id="buy-del">购买</a>
 		</div>
 		<div id="hint">Please choose your boardgame.</div>
-		<script type="text/javascript" src="event_register.js"></script>
+		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
 	</body>
 </html>
