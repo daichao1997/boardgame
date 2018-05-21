@@ -1,5 +1,4 @@
 var item;
-var 
 
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
