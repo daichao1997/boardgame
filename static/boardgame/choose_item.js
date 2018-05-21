@@ -1,4 +1,5 @@
 var item;
+var 
 
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -24,7 +25,7 @@ function show_action_del(event) {
 function add_item(event) {
 	var userid = getQueryString("userid");
 	
-	var bglist = document.getElementById("bglist");
+	// var bglist = document.getElementById("bglist");
 	var mylist = document.getElementById("mylist");
 	
 	//var item = event.currentTarget;
@@ -59,7 +60,7 @@ function del_item(event) {
 	var userid = getQueryString("userid");
 	
 	var bglist = document.getElementById("bglist");
-	var mylist = document.getElementById("mylist");
+	// var mylist = document.getElementById("mylist");
 	
 	//var item = event.currentTarget;
 	var bgid = item.getAttribute("data-bgid");
@@ -89,6 +90,35 @@ function del_item(event) {
 	xmlhttp.send();
 }
 
+var links = new Array(26);
+links[0] = "https://detail.tmall.com/item.htm?id=520039178599"
+links[1] = "https://detail.tmall.com/item.htm?id=41414138685"
+links[2] = "https://item.taobao.com/item.htm?id=3477905332"
+links[3] = "https://item.taobao.com/item.htm?id=10917532149"
+links[4] = "https://detail.tmall.com/item.htm?id=15735285950"
+links[5] = "https://detail.tmall.com/item.htm?id=44234749492"
+links[6] = "https://detail.tmall.com/item.htm?id=10625792948"
+links[7] = "https://detail.tmall.com/item.htm?id=4298984588"
+links[8] = "https://detail.tmall.com/item.htm?id=522968001275"
+links[9] = "https://detail.tmall.com/item.htm?id=14852080978"
+links[10] = "https://item.taobao.com/item.htm?id=535636029062"
+links[11] = "https://detail.tmall.com/item.htm?id=25495324479"
+links[12] = "https://item.taobao.com/item.htm?id=10917532149"
+links[13] = "https://item.taobao.com/item.htm?id=6728804097"
+links[14] = "https://detail.tmall.com/item.htm?id=17345949847"
+links[15] = "https://item.taobao.com/item.htm?id=6023896479"
+links[16] = "https://item.taobao.com/item.htm?id=3412059509"
+links[17] = "https://item.taobao.com/item.htm?id=10311501840"
+links[18] = "https://detail.tmall.com/item.htm?id=41439472591"
+links[19] = "https://detail.tmall.com/item.htm?id=549541479299"
+links[20] = "https://item.taobao.com/item.htm?id=3782592653"
+links[21] = "https://item.taobao.com/item.htm?id=523994323646"
+links[22] = "https://item.taobao.com/item.htm?id=8518310263"
+links[23] = "https://item.taobao.com/item.htm?id=3959805429"
+links[24] = "https://item.taobao.com/item.htm?id=3421467337"
+links[25] = "https://item.taobao.com/item.htm?id=3335212729"
+
 function buy_item(event) {
-	window.location.replace("https://www.baidu.com");
+	var bgid = parseInt(item.getAttribute("data-bgid"));
+	window.open(links[bgid],"_blank");
 }
