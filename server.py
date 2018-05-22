@@ -8,7 +8,7 @@ import base64
 import urllib
 import extract
 import pymysql, os
-
+import random, string
 
 # token = ['.','?','!','。','？','！']
 trans_num = {
@@ -229,12 +229,12 @@ def handle_post():
         EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
         DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
         secret = "HELLO_I_AM_A_KEY"
-        iv = "HELLO_I_AM_A_KEY"
+        iv = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
         cipher=AES.new(key=secret,mode=AES.MODE_CBC,IV=iv)
         encoded = EncodeAES(cipher, usr)
 
         id_url = urllib.parse.quote_plus(encoded)
-        url = "http://v.voltree.cn/boardgame/boardgame.php?userid="+id_url
+        url = "http://v.internetapi.cn/boardgame/boardgame.php?userid="+id_url+"&iv="+iv
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
