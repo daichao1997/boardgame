@@ -230,6 +230,7 @@ def handle_post():
         DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
         secret = "HELLO_I_AM_A_KEY"
         iv = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
+        #iv = "HELLO_I_AM_A_KEY"
         cipher=AES.new(key=secret,mode=AES.MODE_CBC,IV=iv)
         encoded = EncodeAES(cipher, usr)
 

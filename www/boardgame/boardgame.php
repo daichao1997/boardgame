@@ -25,7 +25,7 @@
 	$dbname = "boardgameRecommendation";
 	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
 	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
-	$userid = urldecode($userid);
+//	$userid = urldecode($userid);
 
 	$secret = "HELLO_I_AM_A_KEY"; // same secret as python
 	$iv=mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
