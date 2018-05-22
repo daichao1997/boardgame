@@ -28,7 +28,7 @@
 	$userid = urldecode($userid);
 
 	$secret = "HELLO_I_AM_A_KEY"; // same secret as python
-	$iv=$_GET["iv"];  // same iv as python
+	$iv=mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
 	$padding = "{";  //same padding as python
 	function decrypt_data($data, $iv, $key) {
 		$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');

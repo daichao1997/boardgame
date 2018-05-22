@@ -32,7 +32,7 @@ function show_action_del(event) {
 }
 function add_item(event) {
 	var userid = getQueryString("userid");
-	
+	var iv = getQueryString("iv");	
 	// var bglist = document.getElementById("bglist");
 	var mylist = document.getElementById("mylist");
 	
@@ -65,14 +65,14 @@ function add_item(event) {
 		document.getElementById("hint").innerHTML = "Invalid userid";
 	}
 	else {
-		xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.open("GET","handle.php?userid="+userid+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
 		xmlhttp.send();
 	}
 }
 
 function del_item(event) {
 	var userid = getQueryString("userid");
-	
+	var iv = getQueryString("iv");
 	var bglist = document.getElementById("bglist");
 	// var mylist = document.getElementById("mylist");
 	
@@ -104,7 +104,7 @@ function del_item(event) {
 		document.getElementById("hint").innerHTML = "Invalid userid";
 	}
 	else {
-		xmlhttp.open("GET","handle.php?userid="+userid+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.open("GET","handle.php?userid="+userid+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
 		xmlhttp.send();
 	}
 }
