@@ -3,6 +3,7 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+from Crypto.Cipher import AES
 import base64
 import urllib
 import extract
@@ -212,11 +213,27 @@ def handle_post():
     
     # manager
     elif rslt["type"] == 6:
-        # obj = AES.new("YEK_A_MA_I_OLLEH", AES.MODE_CBC, "THIS_IS_A_VECTOR")
-        # id_aes = obj.encrypt(usr)
-        id_base64 = base64.b64encode(usr.encode())
-        id_url = urllib.parse.quote_plus(id_base64)
+        # the block size for the cipher object; must be 16, 24, or 32 for AES
+        BLOCK_SIZE = 32
 
+        # the character used for padding--with a block cipher such as AES, the value
+        # you encrypt must be a multiple of BLOCK_SIZE in length.  This character is
+        # used to ensure that your value is always a multiple of BLOCK_SIZE
+        PADDING = '{'
+
+        # one-liner to sufficiently pad the text to be encrypted
+        pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+
+        # one-liners to encrypt/encode and decrypt/decode a string
+        # encrypt with AES, encode with base64
+        EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
+        DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
+        secret = "HELLO_I_AM_A_KEY"
+        iv = "HELLO_I_AM_A_KEY"
+        cipher=AES.new(key=secret,mode=AES.MODE_CBC,IV=iv)
+        encoded = EncodeAES(cipher, usr)
+
+        id_url = urllib.parse.quote_plus(encoded)
         url = "http://v.voltree.cn/boardgame/boardgame.php?userid="+id_url
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
@@ -231,7 +248,7 @@ def handle_post():
                        push_to_app = {
                         "title": "您的桌游管理链接",
                         "type": "1",
-                        "url": url
+                        "text": url
                         })
     
     # has game

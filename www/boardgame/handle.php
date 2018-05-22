@@ -12,8 +12,34 @@ $bgid = mysqli_real_escape_string($db, $_GET["bgid"]);
 // userid
 $userid = mysqli_real_escape_string($db, $_GET["userid"]);
 $userid = urldecode($userid);
-$userid = base64_decode($userid);
-//$userid = openssl_decrypt($userid, "AES-128-CBC", "YEK_A_MA_I_OLLEH", OPENSSL_RAW_DATA, "THIS_IS_A_VECTOR");
+
+$secret = "HELLO_I_AM_A_KEY"; // same secret as python
+$iv="HELLO_I_AM_A_KEY";  // same iv as python
+$padding = "{";  //same padding as python
+function decrypt_data($data, $iv, $key) {
+	$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
+
+	if(is_null($iv)) {
+		$ivlen = mcrypt_enc_get_iv_size($cypher);
+		$iv = substr($data, 0, $ivlen);
+		$data = substr($data, $ivlen);
+	}
+
+	// initialize encryption handle
+	if (mcrypt_generic_init($cypher, $key, $iv) != -1) {
+			// decrypt
+			$decrypted = mdecrypt_generic($cypher, $data);
+
+			// clean up
+			mcrypt_generic_deinit($cypher);
+			mcrypt_module_close($cypher);
+
+			return $decrypted;
+	}
+	return false;
+}
+$userid = rtrim(decrypt_data(base64_decode($userid), $iv, $secret), $padding);
+
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
 mysqli_query($db, "set character set 'utf8'");
