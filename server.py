@@ -239,7 +239,7 @@ def handle_post():
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
-                        "outputSpeech": "请打开我们为您推送的链接，在网页上进行操作",
+                        "outputSpeech": "请打开我们为您推送的链接，在网页上进行操作"+url,
                         "reprompt": {
                           "outputSpeech": "对不起，我没听清，可以再试试吗"
                         },
@@ -436,4 +436,4 @@ def handle_post():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=22101)
+    app.run(host="127.0.0.1", port=22102)
