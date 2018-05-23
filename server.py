@@ -9,7 +9,7 @@ import urllib
 import extract
 import pymysql, os
 import random, string
-import time
+import time as time_pkg
 
 # token = ['.','?','!','。','？','！']
 trans_num = {
@@ -48,8 +48,8 @@ defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
 
 def dbConnet():
 
-    conn = pymysql.connect("localhost","mysql","mysql",\
-        "boardgameRecommendation",charset="utf8")
+    conn = pymysql.connect(host="localhost",user="mysql",passwd="mysql",\
+        db="boardgameRecommendation",charset="utf8",autocommit=True)
     cursor = conn.cursor()
     return cursor
 
@@ -229,10 +229,15 @@ def handle_post():
 
         # id_url = urllib.parse.quote_plus(encoded)
         # url = "http://v.internetapi.cn/boardgame/boardgame.php?userid="+id_url+"&iv="+iv
-        code = ''.join(random.choice(string.digits) for _ in range(4))
-        timestamp = int(time.time())
+        code1 = random.choice(string.digits)
+        code2 = random.choice(string.digits)
+        code3 = random.choice(string.digits)
+        code4 = random.choice(string.digits)
+        code = code1 + code2 + code3 + code4
+        timestamp = int(time_pkg.time())
         try:
             cursor = dbConnet()
+            print("INSERT INTO code VALUES ('%s', '%s', '%d')" % (usr, code, timestamp))
             cursor.execute("INSERT INTO code VALUES ('%s', '%s', '%d')" % (usr, code, timestamp))
         except Exception as e:
             print(e)
@@ -242,7 +247,7 @@ def handle_post():
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
-                        "outputSpeech": "请打开管理链接，输入验证码。您的验证码是，"+code,
+                        "outputSpeech": "请打开管理链接，输入验证码。您的验证码是，"+code1+"，"+code2+"，"+code3+"，"+code4,
                         "reprompt": {
                           "outputSpeech": "请重新获取验证码"
                         },

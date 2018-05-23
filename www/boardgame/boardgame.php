@@ -62,14 +62,16 @@ function decrypt_data($data, $iv, $key) {
 	}
 	return false;
 }
-	$userid = decrypt_data(base64_decode($userid), $iv, $secret);
-	$userid = (string)($userid);
-	$time = (int)(substr($userid, 32));
-	$userid = substr($userid, 0, 32);
-	if(!ctype_alnum($userid)) {
-		echo "boardgame.php: Invalid User ID.";
-		exit;
-	}
+	$userid = (string)(decrypt_data(base64_decode($userid), $iv, $secret));
+	preg_match_all('/\d+/', $userid, $nums);
+	$pos = strrpos($userid, substr(end($nums[0]), -1), 0);
+	$userid = substr($userid, 0, $pos+1);
+	$time = (int)(substr($userid, strlen($userid)-10, 10));
+	$userid = substr($userid, 0, strlen($userid)-10);
+//	if(base64_encode(base64_decode($userid, true)) != $userid) {
+//		echo "boardgame.php: Invalid User ID.";
+//		exit;
+//	}
 	if(time() - $time > 30) {
 		echo "Time out. Get verification code again.";
 		exit;

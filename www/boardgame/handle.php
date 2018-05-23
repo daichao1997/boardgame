@@ -41,12 +41,15 @@ function decrypt_data($data, $iv, $key) {
 	return false;
 }
 
-$userid = decrypt_data(base64_decode($userid), $iv, $secret);
-$userid = substr((string)($userid), 0, 32);
-if(!ctype_alnum($userid)) {
-	echo "Invalid User ID: $userid";
-	exit;
-}
+$userid = (string)(decrypt_data(base64_decode($userid), $iv, $secret));
+preg_match_all('/\d+/', $userid, $nums);
+$pos = strrpos($userid, substr(end($nums[0]), -1), 0);
+$userid = substr($userid, 0, $pos+1);
+$userid = substr($userid, 0, strlen($userid)-10);
+//if(base64_encode(base64_decode($userid)) !== $userid) {
+//	echo "Invalid User ID: $userid";
+//	exit;
+//}
 
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
