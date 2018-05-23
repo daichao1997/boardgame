@@ -15,8 +15,8 @@
 				left: 0;
 				right: 0;
 				margin: auto;
-				width: 700px;
-				height: 50px;
+				width: 80%;
+				height: 20%;
 				display: flex;
 				justify-content: center; 
 			}
@@ -27,8 +27,8 @@
 				left: 0;
 				right: 0;
 				margin: auto;
-				width: 400px;
-				height: 50px;
+				width: 80%;
+				height: 20%;
 				display: flex;
 				justify-content: center; 
 			}
@@ -41,16 +41,16 @@
 			</div>
 			<div class="field has-addons" id="b">
 				<p class="control">
-					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+					<input class="input is-large" id="n1" type="text" size="1" maxlength="1" style="text-align:center;"/>
 				</p>
 				<p class="control">
-					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+					<input class="input is-large" id="n2" type="text" size="1" maxlength="1" style="text-align:center;"/>
 				</p>
 				<p class="control">
-					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+					<input class="input is-large" id="n3" type="text" size="1" maxlength="1" style="text-align:center;"/>
 				</p>
 				<p class="control">
-					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+					<input class="input is-large" id="n4" type="text" size="1" maxlength="1" style="text-align:center;"/>
 				</p>
 				<div class="control">
 					<button class="button is-link is-large">Submit</button>
@@ -58,6 +58,11 @@
 			</div>
 
 		<script type="text/javascript">
+			$(".input").keydown(function (evt) {
+				if (evt.which < 48 || evt.which > 57) {
+					evt.preventDefault();
+				}
+			});
 			$(".input").keyup(function () {
 				if (this.value.length == this.maxLength) {
 					var $next = $(this).closest('p').next().find('.input');
@@ -66,6 +71,9 @@
 					else
 						$(this).blur();
 				}
+			});
+			$(".input").focus(function() {
+				$(this).val('');
 			});
 		</script>
 	</body>
