@@ -68,24 +68,36 @@
 			<div class="control" id="c">
 					<button class="button is-link is-large">Submit</button>
 			</div>
+			<div id="hint">
+				hello
+			</div>
 
 		<script type="text/javascript">
-			$(".input").keydown(function (evt) {
-				if (evt.which < 48 || evt.which > 57) {
-					evt.preventDefault();
-				}
-			});
-			$(".input").keyup(function () {
-				if (this.value.length == this.maxLength) {
-					var $next = $(this).closest('p').next().find('.input');
-					if ($next.length)
-						$next.focus();
-					else
-						$(this).blur();
-				}
-			});
-			$(".input").focus(function() {
-				$(this).val('');
+			$(document).ready(function() {
+				$("#n1").focus();
+				$(".input").keydown(function (evt) {
+					if (evt.which < 48 || evt.which > 57) {
+						evt.preventDefault();
+					}
+				});
+				$(".input").keyup(function () {
+					if (this.value.length == this.maxLength) {
+						var $next = $(this).closest('p').next().find('.input');
+						if ($next.length)
+							$next.focus();
+						else
+							$(this).blur();
+					}
+				});
+				$(".input").focus(function() {
+					$(this).val('');
+				});
+				$(".button").click(function() {
+					var code = $("#n1").val() + $("#n2").val() + $("#n3").val() + $("#n4").val();
+					if(code.length != 4)
+						return;
+					$("#hint").load('../../www/boardgame/auth.php', {"code":code});
+				});
 			});
 		</script>
 	</body>

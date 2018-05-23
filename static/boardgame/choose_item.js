@@ -61,7 +61,7 @@ function add_item(event) {
 			document.getElementById("hint").innerHTML = "FAIL!";
 		}
 	}
-	if(!userid || userid.length < 80) {
+	if(!userid || userid.length < 40) {
 		document.getElementById("hint").innerHTML = "Invalid userid";
 	}
 	else {
@@ -100,7 +100,7 @@ function del_item(event) {
 			document.getElementById("hint").innerHTML = "FAIL!";
 		}
 	}
-	if(!userid || userid.length < 80) {
+	if(!userid || userid.length < 40) {
 		document.getElementById("hint").innerHTML = "Invalid userid";
 	}
 	else {
