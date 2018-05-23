@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>芭乐桌游管理</title>
+		<link rel="stylesheet" href="../../static/boardgame/bulma.css">
+		<script type="text/javascript" src="../../static/boardgame/jquery-3.3.1.js"></script>
+		<style type="text/css">
+			#a {
+				position: fixed;
+				top: 35%;
+				bottom: 65%;
+				left: 0;
+				right: 0;
+				margin: auto;
+				width: 700px;
+				height: 50px;
+				display: flex;
+				justify-content: center; 
+			}
+			#b {
+				position: fixed;
+				top: 55%;
+				bottom: 45%;
+				left: 0;
+				right: 0;
+				margin: auto;
+				width: 400px;
+				height: 50px;
+				display: flex;
+				justify-content: center; 
+			}
+		</style>
+		
+	</head>
+	<body>
+			<div class="field" id="a">
+				<label class="label is-size-3">Please enter your verification code.</label>
+			</div>
+			<div class="field has-addons" id="b">
+				<p class="control">
+					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+				</p>
+				<p class="control">
+					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+				</p>
+				<p class="control">
+					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+				</p>
+				<p class="control">
+					<input class="input is-large" type="text" size="1" maxlength="1" style="text-align:center;"/>
+				</p>
+				<div class="control">
+					<button class="button is-link is-large">Submit</button>
+				</div>
+			</div>
+
+		<script type="text/javascript">
+			$(".input").keyup(function () {
+				if (this.value.length == this.maxLength) {
+					var $next = $(this).closest('p').next().find('.input');
+					if ($next.length)
+						$next.focus();
+					else
+						$(this).blur();
+				}
+			});
+		</script>
+	</body>
+</html>
