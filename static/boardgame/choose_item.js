@@ -61,11 +61,14 @@ function add_item(event) {
 			document.getElementById("hint").innerHTML = "FAIL!";
 		}
 	}
-	if(!userid || userid.length < 40) {
-		document.getElementById("hint").innerHTML = "Invalid userid";
+	if(!userid) {
+		$("#hint").text("Please provide 'userid'(encrypted) in your URL.");
+	}
+	else if(!iv) {
+		$("#hint").text("Please provide 'iv' in your URL.");
 	}
 	else {
-		xmlhttp.open("GET","handle.php?userid="+userid+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.open("GET","handle.php?userid="+encodeURIComponent(userid)+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
 		xmlhttp.send();
 	}
 }
@@ -97,14 +100,17 @@ function del_item(event) {
 		}
 		else if (xmlhttp.readyState == 4)
 		{
-			document.getElementById("hint").innerHTML = "FAIL!";
+			document.getElementById("hint").innerHTML = "Ajax failed!";
 		}
 	}
-	if(!userid || userid.length < 40) {
-		document.getElementById("hint").innerHTML = "Invalid userid";
+	if(!userid) {
+		$("#hint").text("Please provide 'userid'(encrypted) in your URL.");
+	}
+	else if(!iv) {
+		$("#hint").text("Please provide 'iv' in your URL.");
 	}
 	else {
-		xmlhttp.open("GET","handle.php?userid="+userid+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
+		xmlhttp.open("GET","handle.php?userid="+encodeURIComponent(userid)+"&iv="+iv+"&bgid="+bgid+"&op="+chosen,true);
 		xmlhttp.send();
 	}
 }

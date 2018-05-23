@@ -1,5 +1,6 @@
 <?php
 header("content-Type: text/html; charset=utf-8");
+
 // When user clicks a button, an event will be triggered, and we will receive a GET request.
 // Handle this request by writing to our database correctly.
 $dbhost = "localhost";
@@ -7,14 +8,16 @@ $dbuser = "mysql";
 $dbpasswd = "mysql";
 $dbname = "boardgameRecommendation";
 $db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
+
 // bgid: boardgame ID of that clicked button
 $bgid = mysqli_real_escape_string($db, $_GET["bgid"]);
+
 // userid
 $userid = mysqli_real_escape_string($db, $_GET["userid"]);
-//$userid = urldecode($userid);
 
-$secret = "HELLO_I_AM_A_KEY"; // same secret as python
-$iv = mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
+$secret = "HELLO_I_AM_A_KEY";
+$iv = mysqli_real_escape_string($db, $_GET["iv"]);
+
 function decrypt_data($data, $iv, $key) {
 	$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
 
@@ -37,11 +40,18 @@ function decrypt_data($data, $iv, $key) {
 	}
 	return false;
 }
+
 $userid = decrypt_data(base64_decode($userid), $iv, $secret);
-$userid = substr((string)$userid, 0, 32);
+$userid = substr((string)($userid), 0, 32);
+if(!ctype_alnum($userid)) {
+	echo "Invalid User ID: $userid";
+	exit;
+}
+
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
 mysqli_query($db, "set character set 'utf8'");
+
 // Write to our database.
 if($op === "yes") {
 	$sql = "DELETE FROM barmanager WHERE userid='$userid' AND id='$bgid'";
@@ -51,7 +61,7 @@ else if($op === "no") {
 }
 
 if(mysqli_query($db, $sql)){
- 	echo "Well done, $userid! You have clicked $bgid.";
+ 	echo "Your User ID: $userid. You have just choosed $bgid.";
 }
 else{
 	echo "Update Failed!";

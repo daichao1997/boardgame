@@ -10,8 +10,8 @@ $(document).ready(function(){
 	// 	//mylist[i].onclick = choose_item;
 	// 	mylist[i].onclick = show_action_del;
 	// }
-	$("#bglist").children().click(show_action_add)
-	$("#mylist").children().click(show_action_del)
+	$("#bglist").children().click(show_action_add);
+	$("#mylist").children().click(show_action_del);
 	// var action_add = document.getElementById("action-add");
 	// var action_del = document.getElementById("action-del");
 	// action_add.style.display = "none";

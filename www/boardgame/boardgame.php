@@ -24,11 +24,22 @@
 	$dbpasswd = "mysql";
 	$dbname = "boardgameRecommendation";
 	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
+	if(!isset($_GET["userid"])) {
+		echo "Please provide 'userid'(encrypted) in your URL.";
+		exit;
+	}
+	if(!isset($_GET["iv"])) {
+		echo "Please provide 'iv' in your URL.";
+		exit;
+	}
 	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
-//	$userid = urldecode($userid);
 
-	$secret = "HELLO_I_AM_A_KEY"; // same secret as python
-	$iv=mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
+	$secret = "HELLO_I_AM_A_KEY";
+	$iv = mysqli_real_escape_string($db, $_GET["iv"]);
+	if(strlen($iv) != 16) {
+		echo "IV must have a length of 16.";
+		exit;
+	}
 function decrypt_data($data, $iv, $key) {
 	$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
 
@@ -55,9 +66,13 @@ function decrypt_data($data, $iv, $key) {
 	$userid = (string)($userid);
 	$time = (int)(substr($userid, 32));
 	$userid = substr($userid, 0, 32);
+	if(!ctype_alnum($userid)) {
+		echo "boardgame.php: Invalid User ID.";
+		exit;
+	}
 	if(time() - $time > 30) {
 		echo "Time out. Get verification code again.";
-		exit();
+		exit;
 	}
 	$mylist = "";
 	$bglist = "";
