@@ -9,6 +9,7 @@ import urllib
 import extract
 import pymysql, os
 import random, string
+import time
 
 # token = ['.','?','!','。','？','！']
 trans_num = {
@@ -213,44 +214,41 @@ def handle_post():
     
     # manager
     elif rslt["type"] == 6:
-        # the block size for the cipher object; must be 16, 24, or 32 for AES
-        BLOCK_SIZE = 32
+        # BLOCK_SIZE = 32
+        # PADDING = '{'
 
-        # the character used for padding--with a block cipher such as AES, the value
-        # you encrypt must be a multiple of BLOCK_SIZE in length.  This character is
-        # used to ensure that your value is always a multiple of BLOCK_SIZE
-        PADDING = '{'
+        # pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+        # EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
+        # DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
 
-        # one-liner to sufficiently pad the text to be encrypted
-        pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+        # secret = "HELLO_I_AM_A_KEY"
+        # iv = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
+        # #iv = "HELLO_I_AM_A_KEY"
+        # cipher=AES.new(key=secret,mode=AES.MODE_CBC,IV=iv)
+        # encoded = EncodeAES(cipher, usr)
 
-        # one-liners to encrypt/encode and decrypt/decode a string
-        # encrypt with AES, encode with base64
-        EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
-        DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(PADDING)
-        secret = "HELLO_I_AM_A_KEY"
-        iv = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
-        #iv = "HELLO_I_AM_A_KEY"
-        cipher=AES.new(key=secret,mode=AES.MODE_CBC,IV=iv)
-        encoded = EncodeAES(cipher, usr)
+        # id_url = urllib.parse.quote_plus(encoded)
+        # url = "http://v.internetapi.cn/boardgame/boardgame.php?userid="+id_url+"&iv="+iv
+        code = ''.join(random.choice(string.digits) for _ in range(4))
+        timestamp = int(time.time())
+        try:
+            cursor = dbConnet()
+            cursor.execute("INSERT INTO code VALUES ('%s', '%s', '%d')" % (usr, code, timestamp))
+        except Exception as e:
+            print(e)
+            res = "插入数据库失败"
+            return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
-        id_url = urllib.parse.quote_plus(encoded)
-        url = "http://v.internetapi.cn/boardgame/boardgame.php?userid="+id_url+"&iv="+iv
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
-                        "outputSpeech": "请打开我们为您推送的链接，在网页上进行操作",
+                        "outputSpeech": "请打开管理链接，输入验证码。您的验证码是，"+code,
                         "reprompt": {
-                          "outputSpeech": "对不起，我没听清，可以再试试吗"
+                          "outputSpeech": "请重新获取验证码"
                         },
                         "directives": [],
                         "shouldEndSession": True
-                       },
-                       push_to_app = {
-                        "title": "您的桌游管理链接",
-                        "type": "1",
-                        "text": url
-                        })
+                       })
     
     # has game
     elif rslt["type"] == 7:

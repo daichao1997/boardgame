@@ -29,30 +29,36 @@
 
 	$secret = "HELLO_I_AM_A_KEY"; // same secret as python
 	$iv=mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
-	$padding = "{";  //same padding as python
-	function decrypt_data($data, $iv, $key) {
-		$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
+function decrypt_data($data, $iv, $key) {
+	$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
 
-		if(is_null($iv)) {
-			$ivlen = mcrypt_enc_get_iv_size($cypher);
-			$iv = substr($data, 0, $ivlen);
-			$data = substr($data, $ivlen);
-		}
-
-		// initialize encryption handle
-		if (mcrypt_generic_init($cypher, $key, $iv) != -1) {
-				// decrypt
-				$decrypted = mdecrypt_generic($cypher, $data);
-
-				// clean up
-				mcrypt_generic_deinit($cypher);
-				mcrypt_module_close($cypher);
-
-				return $decrypted;
-		}
-		return false;
+	if(is_null($iv)) {
+		$ivlen = mcrypt_enc_get_iv_size($cypher);
+		$iv = substr($data, 0, $ivlen);
+		$data = substr($data, $ivlen);
 	}
-	$userid = rtrim(decrypt_data(base64_decode($userid), $iv, $secret), $padding);
+
+	// initialize encryption handle
+	if (mcrypt_generic_init($cypher, $key, $iv) != -1) {
+			// decrypt
+			$decrypted = mdecrypt_generic($cypher, $data);
+
+			// clean up
+			mcrypt_generic_deinit($cypher);
+			mcrypt_module_close($cypher);
+
+			return $decrypted;
+	}
+	return false;
+}
+	$userid = decrypt_data(base64_decode($userid), $iv, $secret);
+	$userid = (string)($userid);
+	$time = (int)(substr($userid, 32));
+	$userid = substr($userid, 0, 32);
+	if(time() - $time > 30) {
+		echo "Time out. Get verification code again.";
+		exit();
+	}
 	$mylist = "";
 	$bglist = "";
 	$str = "";

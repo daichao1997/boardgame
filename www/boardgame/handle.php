@@ -15,7 +15,6 @@ $userid = mysqli_real_escape_string($db, $_GET["userid"]);
 
 $secret = "HELLO_I_AM_A_KEY"; // same secret as python
 $iv = mysqli_real_escape_string($db, $_GET["iv"]);  // same iv as python
-$padding = "{";  //same padding as python
 function decrypt_data($data, $iv, $key) {
 	$cypher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_CBC, '');
 
@@ -38,8 +37,8 @@ function decrypt_data($data, $iv, $key) {
 	}
 	return false;
 }
-$userid = rtrim(decrypt_data(base64_decode($userid), $iv, $secret), $padding);
-
+$userid = decrypt_data(base64_decode($userid), $iv, $secret);
+$userid = substr((string)$userid, 0, 32);
 // ="no" if $userid wants to insert $bgid, ="yes" if delete
 $op = mysqli_real_escape_string($db, $_GET["op"]);
 mysqli_query($db, "set character set 'utf8'");
