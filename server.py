@@ -237,6 +237,7 @@ def handle_post():
         timestamp = int(time_pkg.time())
         try:
             cursor = dbConnet()
+            cursor.execute("DELETE FROM code WHERE userid='%s'" % usr)
             print("INSERT INTO code VALUES ('%s', '%s', '%d')" % (usr, code, timestamp))
             cursor.execute("INSERT INTO code VALUES ('%s', '%s', '%d')" % (usr, code, timestamp))
         except Exception as e:
@@ -268,7 +269,7 @@ def handle_post():
             if len(ifhas) == 0:
                 res = "这个没有诶"
             else:
-                res = "有的"
+                res = "这个有的"
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
         except Exception as e:
