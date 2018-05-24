@@ -8,41 +8,16 @@
 		<link rel="stylesheet" href="../../static/boardgame/bulma.css">
 		<script type="text/javascript" src="../../static/boardgame/jquery-3.3.1.js"></script>
 		<style type="text/css">
-			#a {
-				position: fixed;
-				top: 30%;
-				bottom: 70%;
-				left: 0;
-				right: 0;
-				margin: auto;
-				width: 80%;
-				height: 20%;
-				display: flex;
-				justify-content: center; 
-			}
 			#b {
-				position: fixed;
-				top: 50%;
-				bottom: 50%;
-				left: 0;
-				right: 0;
-				margin: auto;
-				width: 80%;
-				height: 20%;
-				display: flex;
-				justify-content: center; 
+				margin: 15vh;
 			}
-			#c {
-				position: fixed;
-				top: 70%;
-				bottom: 30%;
-				left: 0;
-				right: 0;
-				margin: auto;
-				width: 80%;
-				height: 20%;
+			body {
 				display: flex;
-				justify-content: center; 
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				align-content: center;
+				height: 100vh;
 			}
 		</style>
 		
@@ -69,7 +44,6 @@
 					<button class="button is-link is-large">Submit</button>
 			</div>
 			<div id="hint"></div>
-
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$("#n1").focus();
@@ -81,7 +55,7 @@
 				$(".input").keyup(function () {
 					if (this.value.length == this.maxLength) {
 						var $next = $(this).closest('p').next().find('.input');
-						if ($next.length)
+						if ($next.length && $next.val() == "")
 							$next.focus();
 						else
 							$(this).blur();
@@ -90,11 +64,21 @@
 				$(".input").focus(function() {
 					$(this).val('');
 				});
+				$(".input").click(function() {
+					$(this).val('');
+				});
 				$(".button").click(function() {
-					var code = $("#n1").val() + $("#n2").val() + $("#n3").val() + $("#n4").val();
-					if(code.length != 4)
-						return;
-					$("#hint").load('http://v.internetapi.cn/boardgame/auth.php', {"code":code});
+					code = $("#n1").val() + $("#n2").val() + $("#n3").val() + $("#n4").val();
+					if($("#n1").val() == "")
+						$("#n1").focus();
+					else if($("#n2").val() == "")
+						$("#n2").focus();
+					else if($("#n3").val() == "")
+						$("#n3").focus();
+					else if($("#n4").val() == "")
+						$("#n4").focus();
+					else
+						$("#hint").load('http://v.internetapi.cn/boardgame/auth.php', {"code":code});
 				});
 			});
 		</script>
