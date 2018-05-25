@@ -140,6 +140,8 @@ function decrypt_data($data, $iv, $key) {
 			<a class="button is-info" id="buy-del">购买</a>
 		</div>
 		<div id="hint">Please choose your boardgame.</div>
+		<div><?php echo $userid; ?></div>
+		<div><?php echo $iv; ?></div>
 		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
 	</body>
 </html>
