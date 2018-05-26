@@ -61,8 +61,8 @@ $userid = urlencode(base64_encode(encrypt_data($userid.time(), $iv, "HELLO_I_AM_
 // echo "<br />";
 // $userid = decrypt_data(base64_decode(urldecode("cYfuD%2FhpEGk1ifitF3bh43U34ibsutnXAcO0X7M1eZmbjgf8kA26Yf8oB8EyrqRX")), "HELLO_I_AM_A_KEY", "25649aa5ed9260b7");
 // echo $userid;
-$_SESSION["userid"] = "$userid";
-$_SESSION["iv"] = "$iv";
+$_SESSION["userid"] = urlencode("$userid");
+$_SESSION["iv"] = urlencode("$iv");
 
 echo "<script type='text/javascript'> window.location.href = 'http://v.internetapi.cn/boardgame/boardgameSess.php?userid={$userid}&iv={$iv}'; </script>";
 
