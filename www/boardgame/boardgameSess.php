@@ -147,8 +147,8 @@ function decrypt_data($data, $iv, $key) {
 		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
 		<div>
 			<?php
-				$v1 = urldecode($_SESSION["userid"]);
-				$v2 = urldecode($_SESSION["iv"]);
+				$v1 = $_SESSION["userid"];
+				$v2 = $_SESSION["iv"];
 				$v3 = $_SESSION["test1"];
 				$v4 = $_SESSION["test2"];
 				$v5 = $_SESSION["test3"];
