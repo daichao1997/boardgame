@@ -64,7 +64,7 @@ $userid = urlencode(base64_encode(encrypt_data($userid.time(), $iv, "HELLO_I_AM_
 $_SESSION["userid"] = (string)$userid;
 $_SESSION["iv"] = (string)$iv;
 
-echo "<script type='text/javascript'> window.location.href = 'http://v.internetapi.cn/boardgame/boardgame.php?userid={$userid}&iv={$iv}'; </script>";
+echo "<script type='text/javascript'> window.location.href = 'http://v.internetapi.cn/boardgame/boardgameSess.php?userid={$userid}&iv={$iv}'; </script>";
 
 // echo "<script type='text/javascript'> window.location.href = 'http://v.internetapi.cn/boardgame/boardgameSess.php'; </script>";
 // exit;

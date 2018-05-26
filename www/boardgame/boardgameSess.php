@@ -44,9 +44,8 @@
 	$secret = "HELLO_I_AM_A_KEY";
 	$iv = mysqli_real_escape_string($db, $_GET["iv"]);
 
-	$test1 = $_SESSION["userid"];
-	$test2 = $_SESSION["iv"];
-	echo "$userid,$test1,$iv,$test2";
+	$_SESSION["test1"] = $userid;
+	$_SESSION["test2"] = $iv;
 
 	if(strlen($iv) != 16) {
 		echo "IV must have a length of 16.";
@@ -84,10 +83,10 @@ function decrypt_data($data, $iv, $key) {
 //		echo "boardgame.php: Invalid User ID.";
 //		exit;
 //	}
-	if(time() - $time > 30) {
-		echo "Time out. Get verification code again.";
-		exit;
-	}
+	// if(time() - $time > 30) {
+	// 	echo "Time out. Get verification code again.";
+	// 	exit;
+	// }
 	$mylist = "";
 	$bglist = "";
 	$str = "";
@@ -143,5 +142,15 @@ function decrypt_data($data, $iv, $key) {
 		</div>
 		<div id="hint">Please choose your boardgame.</div>
 		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
+		<div>
+			<?php
+				$v1 = $_SESSION["userid"];
+				$v2 = $_SESSION["iv"];
+				$v3 = $_SESSION["test1"];
+				$v4 = $_SESSION["test2"];
+
+				echo "$v1,$v2\n$v3,$v4";
+			?>
+		</div>
 	</body>
 </html>
