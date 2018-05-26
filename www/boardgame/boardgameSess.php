@@ -1,12 +1,11 @@
 <?php
 	session_start();
 	if(!(isset($_SESSION["userid"]) && isset($_SESSION["iv"]))){
-		echo "<script type='text/javascript'>window.alert('Login please!');window.location.href='../../static/boardgame/authSess.html';</script>";
-		exit;
+		echo "<script type='text/javascript'> window.alert('Login please!'); window.location.href = '../../static/boardgame/authSess.html'; </script>";
 	}
 ?>
 
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -32,7 +31,7 @@
 	$dbpasswd = "mysql";
 	$dbname = "boardgameRecommendation";
 	$db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
-	// if(!isset($_SESSION["userid"])) {
+	// if(!isset($_GET["userid"])) {
 	// 	echo "Please provide 'userid'(encrypted) in your URL.";
 	// 	exit;
 	// }
@@ -40,12 +39,15 @@
 	// 	echo "Please provide 'iv' in your URL.";
 	// 	exit;
 	// }
-	// $userid = mysqli_real_escape_string($db, $_GET["userid"]);
-	$userid = mysqli_real_escape_string($db, $_SESSION["userid"]);
+	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
 
 	$secret = "HELLO_I_AM_A_KEY";
-	// $iv = mysqli_real_escape_string($db, $_GET["iv"]);
-	$iv = mysqli_real_escape_string($db, $_SESSION["iv"]);
+	$iv = mysqli_real_escape_string($db, $_GET["iv"]);
+
+	$test1 = $_SESSION["userid"];
+	$test2 = $_SESSION["iv"];
+	echo "$userid,$test1,$iv,$test2";
+
 	if(strlen($iv) != 16) {
 		echo "IV must have a length of 16.";
 		exit;
@@ -140,8 +142,6 @@ function decrypt_data($data, $iv, $key) {
 			<a class="button is-info" id="buy-del">购买</a>
 		</div>
 		<div id="hint">Please choose your boardgame.</div>
-		<div><?php echo $userid; ?></div>
-		<div><?php echo $iv; ?></div>
 		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
 	</body>
 </html>
