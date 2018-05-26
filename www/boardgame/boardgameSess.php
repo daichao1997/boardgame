@@ -39,15 +39,15 @@
 	// 	echo "Please provide 'iv' in your URL.";
 	// 	exit;
 	// }
-	$userid = mysqli_real_escape_string($db, $_GET["userid"]);
+	// $userid = mysqli_real_escape_string($db, $_GET["userid"]);
 
 	$secret = "HELLO_I_AM_A_KEY";
-	$iv = mysqli_real_escape_string($db, $_GET["iv"]);
+	// $iv = mysqli_real_escape_string($db, $_GET["iv"]);
 
-	$_SESSION["test1"] = $userid;
-	$_SESSION["test2"] = $iv;
-	$_SESSION["test3"] = mysqli_real_escape_string($db, $_SESSION["userid"]);
-	$_SESSION["test4"] = mysqli_real_escape_string($db, $_SESSION["iv"]);
+	// $_SESSION["test1"] = $userid;
+	// $_SESSION["test2"] = $iv;
+	$userid = mysqli_real_escape_string($db, $_SESSION["userid"]);
+	$iv = mysqli_real_escape_string($db, $_SESSION["iv"]);
 
 
 	if(strlen($iv) != 16) {
@@ -86,10 +86,10 @@ function decrypt_data($data, $iv, $key) {
 //		echo "boardgame.php: Invalid User ID.";
 //		exit;
 //	}
-	// if(time() - $time > 30) {
-	// 	echo "Time out. Get verification code again.";
-	// 	exit;
-	// }
+	if(time() - $time > 30) {
+		echo "Time out. Get verification code again.";
+		exit;
+	}
 	$mylist = "";
 	$bglist = "";
 	$str = "";
