@@ -46,6 +46,9 @@
 
 	$_SESSION["test1"] = $userid;
 	$_SESSION["test2"] = $iv;
+	$_SESSION["test3"] = mysqli_real_escape_string($db, $_SESSION["userid"]);
+	$_SESSION["test4"] = mysqli_real_escape_string($db, $_SESSION["iv"]);
+
 
 	if(strlen($iv) != 16) {
 		echo "IV must have a length of 16.";
@@ -148,8 +151,10 @@ function decrypt_data($data, $iv, $key) {
 				$v2 = $_SESSION["iv"];
 				$v3 = $_SESSION["test1"];
 				$v4 = $_SESSION["test2"];
+				$v5 = $_SESSION["test3"];
+				$v6 = $_SESSION["test4"];
 
-				echo "$v1,$v2\n$v3,$v4";
+				echo "$v1,$v2\n$v3,$v4\n$v5,$v6";
 			?>
 		</div>
 	</body>
