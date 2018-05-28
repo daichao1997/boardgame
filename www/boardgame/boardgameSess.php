@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if(!(isset($_SESSION["userid"]) && isset($_SESSION["iv"]))){
-		echo "<script type='text/javascript'> window.alert('Login please!'); window.location.href = '../../static/boardgame/authSess.html'; </script>";
+		echo "<script type='text/javascript'> window.alert('请您先登录!'); window.location.href = '../../static/boardgame/authSess.html'; </script>";
 	}
 ?>
 
@@ -145,17 +145,5 @@ function decrypt_data($data, $iv, $key) {
 		</div>
 		<div id="hint">Please choose your boardgame.</div>
 		<script type="text/javascript" src="../../static/boardgame/event_register.js"></script>
-		<div>
-			<?php
-				$v1 = $_SESSION["userid"];
-				$v2 = $_SESSION["iv"];
-				$v3 = $_SESSION["test1"];
-				$v4 = $_SESSION["test2"];
-				$v5 = $_SESSION["test3"];
-				$v6 = $_SESSION["test4"];
-
-				echo "$v1,$v2\n$v3,$v4\n$v5,$v6";
-			?>
-		</div>
 	</body>
 </html>
