@@ -14,7 +14,7 @@
 		<title>芭乐桌游管理页面</title>
 		<link rel="stylesheet" href="../../static/boardgame/bulma.css">
 		<script type="text/javascript" src="../../static/boardgame/jquery-3.3.1.js"></script>
-		<script type="text/javascript" src="../../static/boardgame/choose_item.js"></script>
+		<script type="text/javascript" src="../../static/boardgame/choose_item_sess.js"></script>
 	</head>
 	<body>
 		<div class="columns">
