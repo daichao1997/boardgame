@@ -9,12 +9,18 @@ $db = mysqli_connect($dbhost, $dbuser, $dbpasswd, $dbname);
 $code = $_POST["code"];
 $rslt = mysqli_query($db, "SELECT * FROM code WHERE code='$code'");
 
-$userid = "0123456789abcdef0123456789abcdef";
+// $userid = "0123456789abcdef0123456789abcdef";
+$userid = "";
 while($row = mysqli_fetch_assoc($rslt)) {
 	if(time() - $row["time"] < 300) {
 		$userid = $row["userid"];
 		break;
 	}
+}
+
+if($userid === ""){
+	echo "<script type='text/javascript'> window.alert('验证码错误，请重新输入!'); window.location.href = '../../static/boardgame/authSess.html'; </script>";
+	exit;
 }
 
 function encrypt_data($data, $iv, $key) {
