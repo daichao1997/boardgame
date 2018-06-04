@@ -142,6 +142,12 @@ def trans_sql(reqType, sqlType, attrList):
                    ORDER BY prevail DESC" % \
                    (attrList[0], attrList[1])
 
+        elif sqlType == 3:
+            sql = "SELECT name FROM boardgame WHERE \
+                   FIND_IN_SET(id,'%s') \
+                   ORDER BY prevail DESC" % \
+                   (attrList[0])
+
     elif reqType == 1:       
         sql = "SELECT intro FROM boardgame WHERE \
                    FIND_IN_SET('%s',name)" % attrList[0]
@@ -321,6 +327,9 @@ def handle_post():
             else:
                 return return_json(version = json["version"], reqId = req["requestId"])
         
+        elif "流行" in rslt:
+            sql = trans_sql(0, 3, [usrdb])
+
         else:
             return return_json(version = json["version"], reqId = req["requestId"])
 
