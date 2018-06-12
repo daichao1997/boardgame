@@ -43,7 +43,7 @@ trans_1abel=[
 ]
 
 defaultRes = "对不起，我没有找到您想要的";
-defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25'
+defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29'
 
 
 def dbConnet():
@@ -164,6 +164,14 @@ def trans_sql(reqType, sqlType, attrList):
     return sql
 
 
+def logReq(strs):
+
+    with open("log.txt", "a") as fp:
+        for line in strs:
+            fp.write(line+"\n")
+        fp.write("\n")
+
+
 app = Flask(__name__)
 
 @app.route("/", methods=["POST"])
@@ -175,23 +183,26 @@ def handle_post():
     req = json["request"] # requestId & utterance
     usr = json["session"]["user"]["userId"]
     text = req["utterance"]
-    # if text[-1] in token:
-    #     text = text[:-1]
-    print("req:"+text)
-    print("usr:"+usr)
+    log = []
+    log.append("usr:"+usr)
+    log.append("req:"+text)
 
     rslt = extract.extract(text)
     
-    print("type:"+str(rslt["type"]))
+    log.append("type:"+str(rslt["type"]))
 
     # init
     if rslt["type"] == 3: 
-        res = "您好，欢迎使用芭乐桌游，请问需要我做些什么"    
+        res = "您好，欢迎使用芭乐桌游，请问需要我做些什么"
+        log.append(res)
+        logReq()  
         return return_json(res = res, version = json["version"], reqId = req["requestId"])
 
     # exit
     elif rslt["type"] == 4:
         res = "谢谢您的使用，再见"
+        log.append(res)
+        logReq()
         return return_json(res = res, version = json["version"], reqId = req["requestId"], isEnd = True)
 
     # recommendation again
@@ -213,9 +224,13 @@ def handle_post():
                             res += "," + str(i) + ":" + games[i]
                         else:
                             recomFile.write(" "+games[i])
+            log.append(res)
+            logReq()
             return return_json(res = res, version = json["version"], reqId = req["requestId"]) 
         else:
             res = "您之前还没让我给您推荐过桌游哟"
+            log.append(res)
+            logReq()
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
     
     # manager
@@ -251,6 +266,8 @@ def handle_post():
             res = "插入数据库失败"
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
+        log.append(res)
+        logReq()
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
@@ -276,6 +293,8 @@ def handle_post():
                 res = "这个没有诶"
             else:
                 res = "这个有的"
+            log.append(res)
+            logReq()
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
         except Exception as e:
@@ -349,6 +368,8 @@ def handle_post():
                             res += "," + str(i+1) + ":" + game[0]
                         else:
                             recomFile.write(" "+game[0])
+            log.append(res)
+            logReq()
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
         
         except Exception as e:
@@ -370,7 +391,9 @@ def handle_post():
                     res = "对不起，没有找到满足您要求的桌游"
                 else:
                     res = intro[0][0]
-                    res += "希望您喜欢这款游戏"                
+                    res += "希望您喜欢这款游戏" 
+                log.append(res)
+                logReq()               
                 return return_json(res = res, version = json["version"], reqId = req["requestId"])
             
             except Exception as e:
@@ -437,6 +460,9 @@ def handle_post():
                     res = "可以，" + res
                 else:
                     res = "不可以，" + res
+
+            log.append(res)
+            logReq()
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
         
         except Exception as e:
