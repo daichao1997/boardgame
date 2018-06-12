@@ -195,14 +195,14 @@ def handle_post():
     if rslt["type"] == 3: 
         res = "您好，欢迎使用芭乐桌游，请问需要我做些什么"
         log.append(res)
-        logReq()  
+        logReq(log)  
         return return_json(res = res, version = json["version"], reqId = req["requestId"])
 
     # exit
     elif rslt["type"] == 4:
         res = "谢谢您的使用，再见"
         log.append(res)
-        logReq()
+        logReq(log)
         return return_json(res = res, version = json["version"], reqId = req["requestId"], isEnd = True)
 
     # recommendation again
@@ -225,12 +225,12 @@ def handle_post():
                         else:
                             recomFile.write(" "+games[i])
             log.append(res)
-            logReq()
+            logReq(log)
             return return_json(res = res, version = json["version"], reqId = req["requestId"]) 
         else:
             res = "您之前还没让我给您推荐过桌游哟"
             log.append(res)
-            logReq()
+            logReq(log)
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
     
     # manager
@@ -267,7 +267,7 @@ def handle_post():
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
         log.append(res)
-        logReq()
+        logReq(log)
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
                        response = {
@@ -294,7 +294,7 @@ def handle_post():
             else:
                 res = "这个有的"
             log.append(res)
-            logReq()
+            logReq(log)
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
         except Exception as e:
@@ -369,7 +369,7 @@ def handle_post():
                         else:
                             recomFile.write(" "+game[0])
             log.append(res)
-            logReq()
+            logReq(log)
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
         
         except Exception as e:
@@ -393,7 +393,7 @@ def handle_post():
                     res = intro[0][0]
                     res += "希望您喜欢这款游戏" 
                 log.append(res)
-                logReq()               
+                logReq(log)               
                 return return_json(res = res, version = json["version"], reqId = req["requestId"])
             
             except Exception as e:
@@ -462,7 +462,7 @@ def handle_post():
                     res = "不可以，" + res
 
             log.append(res)
-            logReq()
+            logReq(log)
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
         
         except Exception as e:
