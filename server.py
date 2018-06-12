@@ -327,11 +327,12 @@ def handle_post():
             else:
                 return return_json(version = json["version"], reqId = req["requestId"])
         
-        elif "流行" in rslt:
-            sql = trans_sql(0, 3, [usrdb])
+        #elif "流行" in rslt:
+         #   sql = trans_sql(0, 3, [usrdb])
 
         else:
-            return return_json(version = json["version"], reqId = req["requestId"])
+           # return return_json(version = json["version"], reqId = req["requestId"])
+            sql = trans_sql(0,3,[usrdb])
 
         try:
             cursor.execute(sql)

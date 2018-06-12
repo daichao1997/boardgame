@@ -55,7 +55,10 @@ import re
 
 流行 = "(((很|比较)?(火|流行|有人气))|(人气(很|比较)?高)|(玩(的|得)(人)?(很|比较)?多))"
 
+推荐 = "(有(什么|哪些)(桌游))|推荐"
+
 def extract(sentence):
+    recom = re.compile(推荐).search(sentence)
     player = re.compile(人数).search(sentence)
     duration = re.compile(时长).search(sentence)
     label = re.compile(标签).search(sentence)
@@ -115,6 +118,8 @@ def extract(sentence):
             return {"type" : 0, "标签" : label.group("标签")}
         if not (popular is None):
             return {"type" : 0, "流行" : "流行"}
+        if not (recom is None):
+            return {"type" : 0}
 
     return {"type": -1}
 
@@ -133,6 +138,7 @@ if __name__ == "__main__":
     extract_test("有什么一个小时内能玩完的桌游")
     extract_test("有没有比较流行的桌游")
     extract_test("推荐一下人气高的桌游")
+    extract_test("随便推荐几个桌游")
     #继续推荐
     extract_test("继续嘛")
     extract_test("人家还要")
