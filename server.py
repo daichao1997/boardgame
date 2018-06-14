@@ -199,11 +199,11 @@ def handle_post():
         elif usr in blankTwice:
             blankTwice[usr] += 1
             res = "我没听清，可以再说一次吗"
-            return_json(res=res, version=json["version"], reqId=req["requestId"])
+            return return_json(res=res, version=json["version"], reqId=req["requestId"])
         else:
             blankTwice[usr] = 1
             res = "我没听清，可以再说一次吗"
-            return_json(res=res, version=json["version"], reqId=req["requestId"])
+            return return_json(res=res, version=json["version"], reqId=req["requestId"])
 
     log = []
     log.append(time_pkg.strftime("%Y-%m-%d %H:%M:%S", time_pkg.localtime()))
@@ -543,11 +543,11 @@ def handle_post():
             return return_json(res=res, version=json["version"], reqId=req["requestId"], isEnd=True)
         elif usr in errorTwice:
             errorTwice[usr] += 1
-            return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
+            return return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
         else:
             errorTwice[usr] = 1
-            return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
-        return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
+            return return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
+        
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=22102)
