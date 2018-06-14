@@ -270,7 +270,7 @@ def handle_post():
             res = "插入数据库失败"
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
-        log.append(res)
+        # log.append(res)
         logReq(log)
         return jsonify(version = json["version"],
                        requestId = req["requestId"],
