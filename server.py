@@ -268,6 +268,7 @@ def handle_post():
         except Exception as e:
             print(e)
             res = "插入数据库失败"
+            logReq(log)
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
         # log.append(res)
@@ -304,6 +305,7 @@ def handle_post():
         except Exception as e:
             print(e)
             res = "数据库错误"
+            logReq(log)
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
 
     # recommendation
@@ -379,6 +381,7 @@ def handle_post():
         except Exception as e:
             print(e)
             res = "数据库错误"
+            logReq(log)
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
         
     # introduction    
@@ -403,6 +406,7 @@ def handle_post():
             except Exception as e:
                 print(e)
                 res = "数据库错误"
+                logReq(log)
                 return return_json(res=res, version = json["version"], reqId = req["requestId"])
         else:
             return return_json(version = json["version"], reqId = req["requestId"])
@@ -472,6 +476,7 @@ def handle_post():
         except Exception as e:
             print(e)
             res = "数据库错误"
+            logReq(log)
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
     
     # failed: -1
