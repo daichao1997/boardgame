@@ -42,8 +42,11 @@ trans_1abel=[
     ["敏捷","反应","手速","反射弧"]
 ]
 
-defaultRes = "对不起，我没有找到您想要的";
+defaultRes = "对不起，我没有找到您想要的，再试试好吗";
 defaultDB = '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29'
+
+blankTwice = {}
+errorTwice = {}
 
 
 def dbConnet():
@@ -176,6 +179,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["POST"])
 def handle_post():
+
+	global blankTwice, errorTwice
     
     json =  request.get_json()
     # print(json)
@@ -183,6 +188,22 @@ def handle_post():
     req = json["request"] # requestId & utterance
     usr = json["session"]["user"]["userId"]
     text = req["utterance"]
+    if text == "":
+    	if usr in blankTwice and blankTwice[usr] == 2:
+    		res = "您好久没使用芭乐桌游啦，我先撤啦，有事您再叫我哟"
+    		blankTwice.pop(usr)
+    		if usr in errorTwice:
+    			errorTwice.pop(usr)
+    		return return_json(res=res, version=json["version"], reqId=req["requestId"], isEnd=True)
+    	elif usr in blankTwice:
+    		blankTwice[usr] += 1
+    		res = "我没听清，可以再说一次吗"
+    		return_json(res=res, version=json["version"], reqId=req["requestId"])
+    	else:
+    		blankTwice[usr] = 1
+    		res = "我没听清，可以再说一次吗"
+    		return_json(res=res, version=json["version"], reqId=req["requestId"])
+
     log = []
     log.append(time_pkg.strftime("%Y-%m-%d %H:%M:%S", time_pkg.localtime()))
     log.append("usr:"+usr)
@@ -196,7 +217,11 @@ def handle_post():
     print(rslt["type"])
 
     # init
-    if rslt["type"] == 3: 
+    if rslt["type"] == 3:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         res = "您好，欢迎使用芭乐桌游，请问需要我做些什么"
         log.append(res)
         logReq(log)  
@@ -204,6 +229,10 @@ def handle_post():
 
     # exit
     elif rslt["type"] == 4:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         res = "谢谢您的使用，再见"
         log.append(res)
         logReq(log)
@@ -211,6 +240,10 @@ def handle_post():
 
     # recommendation again
     elif rslt["type"] == 5:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         filename = "gameCache/"+usr+".txt"
         if os.path.exists(filename):
             with open(filename,"r") as recomFile:
@@ -239,6 +272,10 @@ def handle_post():
     
     # manager
     elif rslt["type"] == 6:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         # BLOCK_SIZE = 32
         # PADDING = '{'
 
@@ -286,6 +323,10 @@ def handle_post():
     
     # has game
     elif rslt["type"] == 7:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
 
         game_name = rslt["桌游名"]
         try:
@@ -310,6 +351,10 @@ def handle_post():
 
     # recommendation
     elif rslt["type"] == 0:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
 
         try:
             cursor = dbConnet()
@@ -386,6 +431,10 @@ def handle_post():
         
     # introduction    
     elif rslt["type"] == 1:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         if "桌游名" in rslt:       
             game_name = rslt["桌游名"]
             print("key:"+game_name)
@@ -413,6 +462,10 @@ def handle_post():
    
     # requery
     elif rslt["type"] == 2:
+    	if usr in blankTwice:
+    		blankTwice.pop(usr)
+    	if usr in errorTwice:
+    		errorTwice.pop(usr)	
         if "桌游名" in rslt:       
             game_name = rslt["桌游名"]
             print("key:"+game_name)
@@ -480,8 +533,19 @@ def handle_post():
             return return_json(res=res, version = json["version"], reqId = req["requestId"])
     
     # failed: -1
-    else:       
-        return return_json(version = json["version"], reqId = req["requestId"])
+    else:
+    	if usr in errorTwice and errorTwice[usr] == 2:
+    		res = "对不起，我没明白您的意思，您可以先看下介绍再来唤醒我哟"
+    		errorTwice.pop(usr)
+    		if usr in blankTwice:
+    			blankTwice.pop(usr)
+    		return return_json(res=res, version=json["version"], reqId=req["requestId"], isEnd=True)
+    	elif usr in errorTwice:
+    		errorTwice[usr] += 1
+    		return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
+    	else:
+    		errorTwice[usr] = 1
+    		return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
 
 
 if __name__ == "__main__":
