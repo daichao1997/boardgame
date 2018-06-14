@@ -181,6 +181,7 @@ app = Flask(__name__)
 def handle_post():
 
     global blankTwice, errorTwice
+    global defaultDB, defaultRes
     
     json =  request.get_json()
     # print(json)
@@ -546,7 +547,7 @@ def handle_post():
         else:
             errorTwice[usr] = 1
             return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
-
+        return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=22102)
