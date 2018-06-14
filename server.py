@@ -10,6 +10,7 @@ import extract
 import pymysql, os
 import random, string
 import time as time_pkg
+import time
 
 # token = ['.','?','!','。','？','！']
 trans_num = {
@@ -184,12 +185,16 @@ def handle_post():
     usr = json["session"]["user"]["userId"]
     text = req["utterance"]
     log = []
+    log.append(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     log.append("usr:"+usr)
+    print(usr)
     log.append("req:"+text)
+    print(text)
 
     rslt = extract.extract(text)
     
     log.append("type:"+str(rslt["type"]))
+    print(rslt["type"])
 
     # init
     if rslt["type"] == 3: 
