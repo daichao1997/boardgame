@@ -190,16 +190,12 @@ def handle_post():
     usr = json["session"]["user"]["userId"]
     text = req["utterance"]
     if text == "":
-        if usr in blankTwice and blankTwice[usr] == 2:
+        if usr in blankTwice:
             res = "您好久没使用芭乐桌游啦，我先撤啦，有事您再叫我哟"
             blankTwice.pop(usr)
             if usr in errorTwice:
                 errorTwice.pop(usr)
             return return_json(res=res, version=json["version"], reqId=req["requestId"], isEnd=True)
-        elif usr in blankTwice:
-            blankTwice[usr] += 1
-            res = "我没听清，可以再说一次吗"
-            return return_json(res=res, version=json["version"], reqId=req["requestId"])
         else:
             blankTwice[usr] = 1
             res = "我没听清，可以再说一次吗"
@@ -535,15 +531,12 @@ def handle_post():
     
     # failed: -1
     else:
-        if usr in errorTwice and errorTwice[usr] == 2:
+        if usr in errorTwice:
             res = "对不起，我没明白您的意思，您可以先看下介绍再来唤醒我哟"
             errorTwice.pop(usr)
             if usr in blankTwice:
                 blankTwice.pop(usr)
             return return_json(res=res, version=json["version"], reqId=req["requestId"], isEnd=True)
-        elif usr in errorTwice:
-            errorTwice[usr] += 1
-            return return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
         else:
             errorTwice[usr] = 1
             return return_json(res=defaultRes, version=json["version"], reqId=req["requestId"])
