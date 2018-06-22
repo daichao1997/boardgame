@@ -416,6 +416,7 @@ def handle_post():
                             res += "," + str(i+1) + ":" + game[0]
                         else:
                             recomFile.write(" "+game[0])
+            res += "。您可以说'再来几个'或者'还有吗'让我继续推荐哟。"
             log.append(res)
             logReq(log)
             return return_json(res = res, version = json["version"], reqId = req["requestId"])
